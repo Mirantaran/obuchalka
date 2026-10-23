@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Обучалка — математика</title>
+<meta name="theme-color" content="#FFC906">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23FFC906'/%3E%3Ccircle cx='32' cy='32' r='13' fill='%23FF7A00'/%3E%3C/svg%3E">
+<style>
+:root{
+  --ink:#191919;
+  --paper:#ffffff;
+  --beige:#f8f2e9;
+  --yellow:#ffc906;
+  --cream:#fff6dc;
+  --orange:#ff7a00;
+  --red:#e8442e;
+  --red-bg:#fde9e4;
+  --green:#1e9e50;
+  --green-bg:#e3f8e9;
+  --gray:#6d6d6d;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  background:var(--beige);color:var(--ink);
+  min-height:100dvh;overflow-x:hidden;
+}
+button{font-family:inherit;color:inherit}
+
+/* геометрические украшения */
+.sh{position:fixed;z-index:0;pointer-events:none;animation:float 8s ease-in-out infinite}
+.sh--tri{top:110px;right:-34px;width:120px;height:104px;background:var(--yellow);
+  clip-path:polygon(50% 0,100% 100%,0 100%);--r:16deg}
+.sh--ring{bottom:80px;left:-52px;width:130px;height:130px;border-radius:50%;
+  border:12px solid var(--orange);--r:0deg;animation-duration:10s}
+.sh--dia{top:44%;left:-30px;width:64px;height:64px;background:var(--orange);--r:45deg}
+.sh--sq{bottom:190px;right:-14px;width:44px;height:44px;background:var(--yellow);
+  --r:14deg;animation-duration:6s}
+.sh--zig{top:250px;left:-16px;width:120px;height:24px;--r:0deg;animation-duration:9s}
+@keyframes float{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(var(--r,0deg))}}
+@media (prefers-reduced-motion:reduce){.sh{animation:none}.confetti{display:none!important}}
+
+.app{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:30px 16px 40px}
+
+/* шапка */
+.logo{display:inline-block;background:var(--yellow);border-radius:14px;
+  padding:7px 18px;font-size:26px;font-weight:900;transform:rotate(-2deg);letter-spacing:.5px}
+
+/* экраны */
+.screen{display:none}
+.screen.on{display:block;animation:appear .25s ease both}
+@keyframes appear{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+.hero{display:flex;gap:16px;align-items:center;margin-top:24px}
+.hero h1{margin:0;font-size:25px;font-weight:900;line-height:1.25}
+
+.section-title{font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gray);margin:28px 0 12px}
+
+.topbar{display:flex;align-items:center;gap:12px;margin-top:24px}
+.topbar h2{margin:0;font-size:21px;font-weight:900}
+.back{background:var(--paper);border-radius:12px;
+  font-weight:900;font-size:15px;padding:8px 13px;cursor:pointer;line-height:1}
+.back:active{transform:translateY(2px)}
+
+/* карточки предметов */
+.subject{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--paper);
+  border-radius:18px;padding:15px;
+  cursor:pointer;margin-bottom:16px;transition:transform .08s}
+.subject:active{transform:translateY(2px)}
+.subject b{display:block;font-size:19px}
+.subject small{color:var(--gray);font-weight:700}
+.subject__icon{flex:0 0 54px;height:54px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;background:var(--yellow)}
+.subject__icon--soft{background:var(--cream)}
+.subject__arrow{margin-left:auto;font-size:20px;font-weight:900;color:#c9c9c9}
+.subject:not(.subject--soon) .subject__arrow{color:var(--ink)}
+.subject--soon{cursor:default}
+.subject--soon:active{transform:none}
+.soon{background:var(--orange);color:#fff;border-radius:999px;
+  font-size:11px;font-weight:900;padding:2px 10px;display:inline-block;margin-left:8px;
+  transform:rotate(4deg);vertical-align:middle}
+
+/* классы */
+.grade{display:flex;align-items:center;gap:16px;width:100%;background:var(--yellow);
+  border-radius:20px;padding:18px 20px;
+  font-size:21px;font-weight:900;cursor:pointer;margin:18px 0;transition:transform .08s;
+  text-align:left}
+.grade:active{transform:translateY(2px)}
+.grade--o{background:var(--orange)}
+.grade__num{flex:0 0 54px;height:54px;background:var(--paper);border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:900;transform:rotate(-4deg)}
+.grade small{display:block;font-size:13px;color:rgba(25,25,25,.72);font-weight:700;margin-top:2px}
+
+/* карточки уроков */
+.card{position:relative;background:var(--paper);border-radius:20px;
+  padding:22px;margin-top:26px}
+.card h3{margin:0 0 8px;font-size:21px;font-weight:900}
+.card p{margin:0 0 12px;color:var(--gray);font-weight:600;line-height:1.45}
+.card__ribbon{position:absolute;top:-15px;right:14px;background:var(--yellow);
+  border-radius:999px;padding:3px 12px;font-size:12px;font-weight:900;transform:rotate(3deg)}
+.meta{display:inline-block;background:var(--cream);border-radius:999px;
+  padding:4px 12px;font-size:13px;font-weight:800;margin:0 6px 16px 0}
+.best{display:inline-block;background:var(--green-bg);border-radius:999px;
+  padding:4px 12px;font-size:13px;font-weight:800;margin:0 6px 16px 0}
+
+.btn{display:block;width:100%;background:var(--yellow);border-radius:16px;
+  padding:16px;font-size:18px;font-weight:900;cursor:pointer;transition:transform .08s}
+.btn:active{transform:translateY(2px)}
+.btn+.btn{margin-top:12px}
+.btn--o{background:var(--orange)}
+.btn--ghost{background:var(--paper)}
+
+/* урок: навигация, прогресс и задание */
+.task-nav{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
+.task-nav span{font-size:12px;font-weight:800;color:var(--gray)}
+.progress{height:20px;border-radius:999px;background:var(--paper);overflow:hidden;margin-top:8px}
+.progress i{display:block;height:100%;width:0;
+  background:repeating-linear-gradient(135deg,var(--orange) 0 12px,var(--yellow) 12px 24px);
+  transition:width .35s ease}
+
+.task{background:var(--paper);border-radius:20px;
+  padding:22px;margin-top:14px}
+.task.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:none}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.q{font-size:22px;font-weight:800;line-height:1.4;margin:4px 0 18px;white-space:pre-line}
+.hint{font-size:13px;color:var(--gray);font-weight:700;margin:-10px 0 14px}
+.ans{width:100%;font-size:28px;font-weight:800;text-align:center;padding:13px;
+  border-radius:14px;background:var(--cream);outline:none}
+.ans:focus{background:#ffe9a8}
+.ans.right{background:var(--green-bg)}
+.ans.wrong{background:var(--red-bg)}
+.choices{display:flex;gap:14px}
+.choices--many{gap:10px}
+.choice{flex:1;font-size:26px;font-weight:900;padding:13px 8px;background:var(--cream);
+  border-radius:14px;cursor:pointer;transition:transform .08s}
+.choices--many .choice{font-size:21px;padding:14px 4px}
+.choice:active{transform:translateY(2px)}
+.choice.sel{background:var(--yellow)}
+.lock .choice{pointer-events:none}
+.choice.ok{background:var(--green-bg)}
+.choice.no{background:var(--red-bg)}
+.check{margin-top:16px}
+
+.feedback{display:none;margin-top:16px;border-radius:16px;padding:12px 14px;
+  font-weight:800;align-items:center;gap:12px;font-size:16px;line-height:1.4}
+.feedback.show{display:flex}
+.feedback--ok{background:var(--green-bg)}
+.feedback--no{background:var(--red-bg)}
+.feedback svg{flex:0 0 56px}
+
+/* результат */
+.result{text-align:center}
+.stars{display:flex;justify-content:center;gap:10px;margin:24px 0 6px}
+.star{width:52px;height:52px;animation:pop .5s ease both}
+.star:nth-child(2){animation-delay:.12s}
+.star:nth-child(3){animation-delay:.24s}
+.star:nth-child(4){animation-delay:.36s}
+.star:nth-child(5){animation-delay:.48s}
+@keyframes pop{from{transform:scale(0);opacity:0}70%{transform:scale(1.25)}to{transform:scale(1);opacity:1}}
+.score{font-size:38px;font-weight:900;margin:6px 0}
+.score small{display:block;font-size:14px;color:var(--gray);font-weight:700;margin-top:2px}
+.result-msg{font-size:17px;font-weight:800;margin:10px 0 6px}
+.score-sub{font-size:14px;color:var(--gray);font-weight:700;margin:0 0 22px}
+
+/* конфетти */
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:6;overflow:hidden}
+.confetti i{position:absolute;top:-24px;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+.footer{margin-top:40px;text-align:center;color:var(--gray);font-size:12px;font-weight:700}
+</style>
+</head>
+<body>
+<noscript>Для работы сайта нужен включённый JavaScript.</noscript>
+
+<div class="sh sh--tri" aria-hidden="true"></div>
+<div class="sh sh--ring" aria-hidden="true"></div>
+<div class="sh sh--dia" aria-hidden="true"></div>
+<div class="sh sh--sq" aria-hidden="true"></div>
+<svg class="sh sh--zig" viewBox="0 0 120 24" aria-hidden="true"><path d="M2 12 L12 2 L22 12 L32 2 L42 12 L52 2 L62 12 L72 2 L82 12 L92 2 L102 12 L112 2 L120 10" fill="none" stroke="#ff7a00" stroke-width="6" stroke-linecap="round"/></svg>
+
+<div class="confetti" id="confetti" aria-hidden="true"></div>
+
+<div class="app">
+  <header>
+    <div class="logo">Обучалка</div>
+  </header>
+
+  <!-- Экран 1: выбор класса -->
+  <section class="screen on" id="sc-home">
+    <div class="hero">
+      <span id="hero-mascot"></span>
+      <h1>Привет! Выбери класс</h1>
+    </div>
+    <p class="section-title">Класс</p>
+    <button class="grade" onclick="openSubject('3')">
+      <span class="grade__num">3</span>
+      <span>Третий класс</span>
+    </button>
+    <button class="grade grade--o" onclick="openSubject('6')">
+      <span class="grade__num">6</span>
+      <span>Шестой класс</span>
+    </button>
+  </section>
+
+  <!-- Экран 2: выбор предмета -->
+  <section class="screen" id="sc-subject">
+    <div class="topbar">
+      <button class="back" onclick="go('sc-home')">←</button>
+      <h2 id="subj-top-title"></h2>
+    </div>
+    <p class="section-title">Выбери предмет</p>
+    <button class="subject" onclick="openTopics()">
+      <span class="subject__icon">÷</span>
+      <span><b>Математика</b><small>темы и повторение</small></span>
+      <span class="subject__arrow">→</span>
+    </button>
+    <button class="subject subject--soon" disabled>
+      <span class="subject__icon subject__icon--soft">?</span>
+      <span><b>Логика<span class="soon">скоро</span></b><small>в разработке</small></span>
+      <span class="subject__arrow">→</span>
+    </button>
+  </section>
+
+  <!-- Экран 3: список тем -->
+  <section class="screen" id="sc-topics">
+    <div class="topbar">
+      <button class="back" onclick="go('sc-subject')">←</button>
+      <h2 id="topics-top-title"></h2>
+    </div>
+    <p class="section-title">Темы</p>
+    <div id="topics-list"></div>
+  </section>
+
+  <!-- Экран 4: задания -->
+  <section class="screen" id="sc-task">
+    <div class="task-nav">
+      <button class="back" onclick="openTopics()">← Вернуться</button>
+      <span id="qlabel"></span>
+    </div>
+    <div class="progress"><i id="bar"></i></div>
+    <div class="task" id="task-card">
+      <div class="q" id="q"></div>
+      <p class="hint" id="hint" style="display:none"></p>
+      <div id="answer-area"></div>
+      <button class="btn check" id="btn-check" onclick="check()">Проверить</button>
+      <button class="btn btn--o" id="btn-next" style="display:none" onclick="next()">Дальше →</button>
+      <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- Экран 5: результат -->
+  <section class="screen" id="sc-result">
+    <div class="result">
+      <div class="stars" id="stars"></div>
+      <div class="score" id="score"></div>
+      <div class="result-msg" id="result-msg"></div>
+      <div class="score-sub" id="score-sub"></div>
+      <button class="btn btn--o" onclick="startLesson(li)">Пройти снова</button>
+      <button class="btn btn--ghost" onclick="openTopics()">К списку тем</button>
+      <button class="btn btn--ghost" onclick="go('sc-home')">На главную</button>
+    </div>
+  </section>
+
+  <footer class="footer">«Обучалка» · прототип · сделано для телефона</footer>
+</div>
+
+<script>
+"use strict";
+
+var LESSONS = {
+  "3": {
+    gradeName: "Третий класс",
+    lessons: [
+      {
+        title: "Изучи: Сложение и вычитание",
+        desc: "Первая тема третьего класса: складываем и вычитаем числа до 100.",
+        meta: "10 заданий · ≈ 10 минут",
+        im: "numeric",
+        tasks: [
+          { q: "Вычисли:\n36 + 7", a: ["43"] },
+          { q: "Вычисли:\n45 − 8", a: ["37"] },
+          { q: "Вычисли:\n28 + 26", a: ["54"] },
+          { q: "Вычисли:\n73 − 47", a: ["26"] },
+          { q: "Вычисли:\n52 + 19", a: ["71"] },
+          { q: "Число 64 увеличили на 15.\nКакое число получилось?", a: ["79"] },
+          { q: "Число 90 уменьшили на 24.\nКакое число получилось?", a: ["66"] },
+          { q: "В автобусе ехали 38 человек. На остановке вышли 15 человек, а вошли 9. Сколько человек стало в автобусе?", a: ["32"] },
+          { q: "На сколько 71 больше, чем 34?", a: ["37"] },
+          { q: "Сравни: 46 + 18 и 70", type: "choice", options: [">", "<", "="], a: ["<"] }
+        ]
+      },
+      {
+        title: "Повторение",
+        desc: "Умножение и деление, задачи, периметр и единицы времени — главное из программы третьего класса.",
+        meta: "10 заданий · ≈ 10 минут",
+        im: "numeric",
+        tasks: [
+          { q: "Вычисли:\n7 · 8", a: ["56"] },
+          { q: "Вычисли:\n81 : 9", a: ["9"] },
+          { q: "Вычисли:\n45 + 38", a: ["83"] },
+          { q: "Вычисли:\n92 − 47", a: ["45"] },
+          { q: "Вычисли:\n6 · 7 − 20", a: ["22"] },
+          { q: "Тетрадь стоит 12 рублей.\nСколько стоят 5 таких тетрадей?", a: ["60"], hint: "Запиши только число" },
+          { q: "У Кати было 50 рублей. Она купила 3 открытки по 12 рублей. Сколько рублей у неё осталось?", a: ["14"], hint: "Запиши только число" },
+          { q: "Сторона квадрата равна 5 см.\nЧему равен периметр квадрата?", a: ["20"], hint: "Запиши число сантиметров" },
+          { q: "Сравни: 3 · 4 и 2 · 6", type: "choice", options: [">", "<", "="], a: ["="] },
+          { q: "Сколько минут\nв 1 часе 20 минутах?", a: ["80"] }
+        ]
+      }
+    ]
+  },
+  "6": {
+    gradeName: "Шестой класс",
+    lessons: [
+      {
+        title: "Изучи: Делимость чисел",
+        desc: "Первая тема шестого класса: делители, кратные и признаки делимости.",
+        meta: "10 заданий · ≈ 15 минут",
+        im: "numeric",
+        tasks: [
+          { q: "Какое из чисел является делителем числа 12?", type: "choice", options: ["5", "6", "7", "8"], a: ["6"] },
+          { q: "Сколько делителей у числа 10?\n(считая 1 и само число)", a: ["4"] },
+          { q: "Какое из чисел кратно 9?", type: "choice", options: ["16", "21", "27", "30"], a: ["27"] },
+          { q: "Какое из чисел делится на 5?", type: "choice", options: ["12", "28", "37", "45"], a: ["45"] },
+          { q: "Какое из чисел делится на 3?", type: "choice", options: ["142", "170", "231", "305"], a: ["231"] },
+          { q: "Какое из чисел делится на 9?", type: "choice", options: ["321", "450", "502", "613"], a: ["450"] },
+          { q: "Какое из чисел делится на 10?", type: "choice", options: ["78", "104", "230", "305"], a: ["230"] },
+          { q: "Чему равен НОД чисел 12 и 18?\n(наибольший общий делитель)", a: ["6"] },
+          { q: "Чему равен НОК чисел 4 и 6?\n(наименьшее общее кратное)", a: ["12"] },
+          { q: "Какое число является делителем любого натурального числа?", type: "choice", options: ["0", "1", "2", "10"], a: ["1"] }
+        ]
+      },
+      {
+        title: "Повторение",
+        desc: "Дроби, отрицательные числа, проценты и пропорции — главное из программы шестого класса.",
+        meta: "10 заданий · ≈ 15 минут",
+        im: "text",
+        tasks: [
+          { q: "Вычисли:\n−5 + 12", a: ["7"] },
+          { q: "Вычисли:\n−8 − 6", a: ["-14"] },
+          { q: "Вычисли:\n−4 · (−6)", a: ["24"] },
+          { q: "Выполни сложение:\n2/5 + 1/5", a: ["3/5"], hint: "Запиши дробь, например: 3/5" },
+          { q: "Сократи дробь:\n18/24", a: ["3/4"], hint: "Запиши дробь, например: 3/4" },
+          { q: "Вычисли:\n0,7 + 0,15", a: ["0.85"] },
+          { q: "Найди 15 % от 200", a: ["30"] },
+          { q: "Найди x из пропорции:\nx : 8 = 3 : 4", a: ["6"] },
+          { q: "Запиши число, противоположное числу 7", a: ["-7"] },
+          { q: "Кофта стоила 250 рублей, а потом подорожала на 20 %. Сколько рублей она стоит теперь?", a: ["300"] }
+        ]
+      }
+    ]
+  }
+};
+
+var PRAISE = ["Верно! Отлично!", "Верно! Так держать!", "Верно! Ты растёшь!", "Верно! Круто!"];
+var grade = null, li = 0, idx = 0, score = 0, mistakes = 0, firstTry = true, answered = false, chosen = null;
+
+function $(id){ return document.getElementById(id); }
+function go(id){
+  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("on"); });
+  $(id).classList.add("on");
+  window.scrollTo(0, 0);
+}
+function esc(s){
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+/* оранжевая звезда вместо робота */
+function mascot(mood, size){
+  return '<svg viewBox="0 0 64 64" width="' + size + '" height="' + size + '" aria-hidden="true">'
+    + '<path d="M32 4 L38.8 23.7 L59.6 24 L42.9 36.6 L49 56.5 L32 44.5 L15 56.5 L21.1 36.6 L4.4 24 L25.2 23.7 Z" fill="#ff7a00"/>'
+    + '</svg>';
+}
+
+function openSubject(g){
+  grade = g;
+  $("subj-top-title").textContent = LESSONS[g].gradeName;
+  go("sc-subject");
+}
+
+function best(g, i){
+  try {
+    var v = +localStorage.getItem("obuchalka_best_" + g + "_" + i) || 0;
+    return v > 5 ? 0 : v; /* значения старого формата («X из 10») отбрасываем */
+  } catch (e){ return 0; }
+}
+/* незавершённый урок: где остановились и сколько уже верно */
+function progKey(g, i){ return "obuchalka_prog_" + g + "_" + i; }
+function loadProg(g, i){
+  try {
+    var p = JSON.parse(localStorage.getItem(progKey(g, i)));
+    if (p && typeof p.i === "number" && typeof p.s === "number" && typeof p.m === "number"
+        && p.i > 0 && p.i < LESSONS[g].lessons[i].tasks.length) return p;
+  } catch (e){}
+  return null;
+}
+function saveProg(i){
+  try { localStorage.setItem(progKey(grade, li), JSON.stringify({ i: i, s: score, m: mistakes })); } catch (e){}
+}
+function clearProg(g, i){ try { localStorage.removeItem(progKey(g, i)); } catch (e){} }
+function openTopics(){
+  var G = LESSONS[grade];
+  $("topics-top-title").textContent = "Математика · " + G.gradeName;
+  $("topics-list").innerHTML = G.lessons.map(function(L, i){
+    var b = best(grade, i), p = loadProg(grade, i);
+    return '<div class="card">'
+      + '<div class="card__ribbon">Урок ' + (i + 1) + '</div>'
+      + '<h3>' + esc(L.title) + '</h3>'
+      + '<p>' + esc(L.desc) + '</p>'
+      + '<div><span class="meta">' + esc(L.meta) + '</span>'
+      + (b > 0 ? '<span class="best">Лучший результат: ' + b + ' из 5</span>' : '')
+      + '</div>'
+      + '<button class="btn" onclick="startLesson(' + i + ')">'
+      + (p ? "Продолжить урок →" : "Начать урок →") + '</button>'
+      + '</div>';
+  }).join("");
+  go("sc-topics");
+}
+function startLesson(i){
+  li = i;
+  var p = loadProg(grade, li);
+  idx = p ? p.i : 0;
+  score = p ? p.s : 0;
+  mistakes = p ? p.m : 0;
+  go("sc-task");
+  renderTask();
+}
+
+function renderTask(){
+  var L = LESSONS[grade].lessons[li], t = L.tasks[idx], n = L.tasks.length;
+  answered = false; chosen = null; firstTry = true;
+  $("bar").style.width = (idx / n * 100) + "%";
+  $("qlabel").textContent = "Задание " + (idx + 1) + " из " + n;
+  $("q").textContent = t.q;
+  var hint = $("hint");
+  if (t.hint){ hint.style.display = ""; hint.textContent = t.hint; } else { hint.style.display = "none"; }
+  var area = $("answer-area");
+  $("task-card").classList.remove("shake");
+  $("feedback").className = "feedback";
+  $("btn-check").style.display = "";
+  $("btn-next").style.display = "none";
+  if (t.type === "choice"){
+    area.className = "choices" + (t.options.length > 3 ? " choices--many" : "");
+    area.innerHTML = t.options.map(function(o){
+      return '<button class="choice" data-v="' + esc(o) + '" onclick="pick(this)">' + esc(o) + "</button>";
+    }).join("");
+  } else {
+    area.className = "";
+    area.innerHTML = '<input class="ans" id="ans-input" type="text" inputmode="' + L.im
+      + '" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="Ответ">';
+    $("ans-input").addEventListener("input", function(){ this.classList.remove("wrong"); });
+    $("ans-input").addEventListener("keydown", function(e){
+      if (e.key === "Enter"){ e.preventDefault(); if (answered) next(); else check(); }
+    });
+  }
+}
+function pick(btn){
+  chosen = btn.dataset.v;
+  btn.parentElement.querySelectorAll(".choice").forEach(function(b){ b.classList.remove("sel"); });
+  btn.classList.add("sel");
+}
+function norm(s){
+  return String(s).trim().toLowerCase()
+    .replace(/[−–—]/g, "-").replace(/,/g, ".")
+    .replace(/\s+/g, "");
+}
+function parseVal(s){
+  s = norm(s);
+  var f = s.match(/^(-?\d+(?:\.\d+)?)\/(\d+)$/);
+  if (f) return +f[1] / +f[2];
+  var m = s.match(/-?\d+(?:\.\d+)?/);
+  return m ? +m[0] : null;
+}
+function isCorrect(t, v){
+  if (t.type === "choice") return norm(v) === norm(t.a[0]);
+  return t.a.some(function(a){
+    var x = parseVal(v), y = parseVal(a);
+    return (x !== null && y !== null && Math.abs(x - y) < 1e-9) || norm(v) === norm(a);
+  });
+}
+
+function check(){
+  if (answered) return;
+  var t = LESSONS[grade].lessons[li].tasks[idx], area = $("answer-area"), v;
+  if (t.type === "choice"){
+    if (!chosen) return;
+    v = chosen;
+  } else {
+    v = $("ans-input").value;
+    if (!norm(v)) return;
+  }
+  var ok = isCorrect(t, v), fb = $("feedback"), card = $("task-card");
+  if (ok){
+    answered = true;
+    if (firstTry) score++;
+    var n = LESSONS[grade].lessons[li].tasks.length;
+    $("bar").style.width = ((idx + 1) / n * 100) + "%";
+    if (t.type === "choice"){
+      area.classList.add("lock");
+      area.querySelectorAll(".choice").forEach(function(b){
+        if (norm(b.dataset.v) === norm(t.a[0])) b.classList.add("ok");
+      });
+    } else {
+      var inp = $("ans-input");
+      inp.disabled = true;
+      inp.classList.remove("wrong");
+      inp.classList.add("right");
+    }
+    fb.className = "feedback show feedback--ok";
+    fb.innerHTML = mascot("happy", 56) + "<span>" + PRAISE[Math.floor(Math.random() * PRAISE.length)] + "</span>";
+    $("btn-check").style.display = "none";
+    var nx = $("btn-next");
+    nx.textContent = idx + 1 >= n ? "Показать результат" : "Дальше →";
+    nx.style.display = "";
+  } else {
+    /* неверный ответ: правильный не раскрываем, ребёнок пробует снова */
+    firstTry = false;
+    mistakes++;
+    saveProg(idx);
+    fb.className = "feedback show feedback--no";
+    fb.innerHTML = mascot("sad", 56) + "<span>Ответ неверный. Попробуй ещё раз!</span>";
+    card.classList.remove("shake");
+    void card.offsetWidth;
+    card.classList.add("shake");
+    if (t.type === "choice"){
+      area.querySelectorAll(".choice").forEach(function(b){
+        if (b.classList.contains("sel")){ b.classList.remove("sel"); b.classList.add("no"); }
+      });
+      chosen = null;
+    } else {
+      $("ans-input").classList.add("wrong");
+      $("ans-input").focus();
+    }
+  }
+}
+function next(){
+  var n = LESSONS[grade].lessons[li].tasks.length;
+  if (idx + 1 >= n) finish();
+  else { idx++; saveProg(idx); renderTask(); }
+}
+/* звёзды за урок: одна ошибка — всё равно пять, дальше − звезда за каждые две ошибки */
+function markFor(R){ return Math.max(1, 5 - Math.floor(R / 2)); }
+function finish(){
+  clearProg(grade, li);
+  var L = LESSONS[grade].lessons[li], n = L.tasks.length;
+  var mark = markFor(mistakes);
+  try {
+    var k = "obuchalka_best_" + grade + "_" + li, b = best(grade, li);
+    if (mark > b) localStorage.setItem(k, mark);
+  } catch (e){}
+  var stars = mark;
+  var msgs = {
+    1: "Не беда! Пройди урок ещё раз — получится.",
+    2: "Бывает! Стоит попрактиковаться — и получится.",
+    3: "Неплохо! Ещё немного тренировки.",
+    4: "Здорово! Почти идеально.",
+    5: "Вот это да! Ты знаток математики!"
+  };
+  $("stars").innerHTML = [0, 1, 2, 3, 4].map(function(i){
+    return '<svg class="star" viewBox="0 0 64 64"><path d="M32 4 L38.8 23.7 L59.6 24 L42.9 36.6 L49 56.5 L32 44.5 L15 56.5 L21.1 36.6 L4.4 24 L25.2 23.7 Z" fill="'
+      + (i < stars ? "#ffc906" : "#eae4da") + '"/></svg>';
+  }).join("");
+  $("score").innerHTML = mark + " из 5<small>" + esc(L.title) + "</small>";
+  $("result-msg").textContent = msgs[mark];
+  $("score-sub").textContent = "С первой попытки: " + score + " из " + n + " · неверных ответов: " + mistakes;
+  go("sc-result");
+  if (mark >= 4) confetti();
+}
+function confetti(){
+  var box = $("confetti"), colors = ["#ffc906", "#ff7a00", "#ffd23f"];
+  box.innerHTML = "";
+  for (var i = 0; i < 28; i++){
+    var p = document.createElement("i"), s = 7 + Math.random() * 8;
+    p.style.left = Math.random() * 100 + "%";
+    p.style.width = s + "px";
+    p.style.height = s + "px";
+    p.style.background = colors[i % 3];
+    if (i % 3 === 1) p.style.borderRadius = "50%";
+    if (i % 3 === 2) p.style.clipPath = "polygon(50% 0,100% 100%,0 100%)";
+    p.style.animationDuration = 2.6 + Math.random() * 1.6 + "s";
+    p.style.animationDelay = Math.random() * 1.5 + "s";
+    box.appendChild(p);
+  }
+}
+
+$("hero-mascot").innerHTML = mascot("happy", 88);
+</script>
+</body>
+</html>
