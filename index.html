@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Обучалка — математика</title>
+<title>Минутка — математика</title>
 <meta name="theme-color" content="#FFC906">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23FFC906'/%3E%3Ccircle cx='32' cy='32' r='13' fill='%23FF7A00'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='24' cy='60' rx='5' ry='3.5' fill='%23FF7A00'/%3E%3Cellipse cx='40' cy='60' rx='5' ry='3.5' fill='%23FF7A00'/%3E%3Ccircle cx='32' cy='33' r='23' fill='%23FFC906' stroke='%23FF7A00' stroke-width='4.5'/%3E%3Cpath d='M41 9 C35 2 28 3 31 10 C33 14 38 14 41 9 Z' fill='%23FF7A00'/%3E%3Cpath d='M41 9 C45 1 53 3 51 10 C50 14 44 14 41 9 Z' fill='%23FF7A00'/%3E%3Ccircle cx='41' cy='9.5' r='3' fill='%23E86A00'/%3E%3Cellipse cx='23' cy='26' rx='4' ry='4.8' fill='%23191919'/%3E%3Cellipse cx='41' cy='26' rx='4' ry='4.8' fill='%23191919'/%3E%3Cpath d='M32 34.5 L32 24 M32 34.5 L39.5 34.5' stroke='%23FF7A00' stroke-width='2.6' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='34.5' r='2' fill='%23FF7A00'/%3E%3Cpath d='M27 42.5 Q32 48 37 42.5' fill='none' stroke='%23191919' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
 :root{
   --ink:#191919;
@@ -29,19 +29,19 @@ body{
 }
 button{font-family:inherit;color:inherit}
 
-/* геометрические украшения */
-.sh{position:fixed;z-index:0;pointer-events:none;opacity:.7;animation:float 8s ease-in-out infinite}
-.sh--tri{top:110px;right:-34px;width:120px;height:104px;background:var(--yellow);
+/* геометрические украшения: крупные и бледные, мягкий фон */
+.sh{position:fixed;z-index:0;pointer-events:none;opacity:.2;animation:float 8s ease-in-out infinite}
+.sh--tri{top:40px;right:-110px;width:320px;height:280px;background:var(--yellow);
   clip-path:polygon(50% 0,100% 100%,0 100%);--r:16deg}
-.sh--ring{bottom:80px;left:-52px;width:130px;height:130px;border-radius:50%;
-  border:12px solid var(--orange);--r:0deg;animation-duration:10s}
-.sh--dia{top:44%;left:-30px;width:64px;height:64px;background:var(--orange);--r:45deg}
-.sh--sq{bottom:190px;right:-14px;width:44px;height:44px;background:var(--yellow);
+.sh--ring{bottom:30px;left:-150px;width:340px;height:340px;border-radius:50%;
+  border:32px solid var(--orange);--r:0deg;animation-duration:10s}
+.sh--dia{top:40%;left:-90px;width:170px;height:170px;background:var(--orange);--r:45deg}
+.sh--sq{bottom:110px;right:-45px;width:120px;height:120px;background:var(--yellow);
   --r:14deg;animation-duration:6s}
-.sh--zig{top:250px;left:-16px;width:120px;height:24px;--r:0deg;animation-duration:9s}
-.sh--semi{bottom:36px;right:110px;width:58px;height:29px;background:var(--yellow);
-  border-radius:29px 29px 0 0;--r:-8deg;animation-duration:11s}
-.sh--dot{bottom:140px;left:90px;width:22px;height:22px;background:var(--orange);
+.sh--zig{top:170px;left:-40px;width:300px;height:60px;--r:0deg;animation-duration:9s}
+.sh--semi{bottom:24px;right:210px;width:150px;height:75px;background:var(--yellow);
+  border-radius:75px 75px 0 0;--r:-8deg;animation-duration:11s}
+.sh--dot{bottom:150px;left:40px;width:60px;height:60px;background:var(--orange);
   border-radius:50%;--r:0deg;animation-duration:7s}
 @keyframes float{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(var(--r,0deg))}}
 @media (prefers-reduced-motion:reduce){.sh{animation:none}.confetti{display:none!important}}
@@ -232,7 +232,7 @@ button{font-family:inherit;color:inherit}
 
 <div class="app">
   <header class="headrow">
-    <div class="logo">Обучалка</div>
+    <div class="logo">Минутка</div>
     <button class="acct" id="acct-btn" style="display:none" onclick="openAuth()"></button>
   </header>
 
@@ -467,10 +467,36 @@ function plural(n, one, few, many){
   return (a === 1 && b !== 11) ? one : (a >= 2 && a <= 4 && (b < 12 || b > 14)) ? few : many;
 }
 
-/* оранжевая звезда вместо робота */
+/* маскот «мисс Минутка»: девочка-часы (по референсу основателя) */
 function mascot(mood, size){
+  var mouth = mood === "sad"
+    ? '<path d="M27 46 Q32 41 37 46" fill="none" stroke="#191919" stroke-width="2.6" stroke-linecap="round"/>'
+    : '<path d="M27 42.5 Q32 48 37 42.5" fill="none" stroke="#191919" stroke-width="2.6" stroke-linecap="round"/>';
   return '<svg viewBox="0 0 64 64" width="' + size + '" height="' + size + '" aria-hidden="true">'
-    + '<path d="M32 4 L38.8 23.7 L59.6 24 L42.9 36.6 L49 56.5 L32 44.5 L15 56.5 L21.1 36.6 L4.4 24 L25.2 23.7 Z" fill="#ff7a00"/>'
+    /* ножки */
+    + '<ellipse cx="24" cy="59.5" rx="5" ry="3.5" fill="#ff7a00"/>'
+    + '<ellipse cx="40" cy="59.5" rx="5" ry="3.5" fill="#ff7a00"/>'
+    /* корпус-циферблат */
+    + '<circle cx="32" cy="33" r="23" fill="#ffc906" stroke="#ff7a00" stroke-width="4.5"/>'
+    /* бантик */
+    + '<path d="M41 9 C35 2 28 3 31 10 C33 14 38 14 41 9 Z" fill="#ff7a00"/>'
+    + '<path d="M41 9 C45 1 53 3 51 10 C50 14 44 14 41 9 Z" fill="#ff7a00"/>'
+    + '<circle cx="41" cy="9.5" r="3" fill="#e86a00"/>'
+    /* глазки с бликами и ресничками */
+    + '<ellipse cx="23" cy="26" rx="4" ry="4.8" fill="#191919"/>'
+    + '<ellipse cx="41" cy="26" rx="4" ry="4.8" fill="#191919"/>'
+    + '<circle cx="22" cy="24.4" r="1.2" fill="#ffffff"/>'
+    + '<circle cx="40" cy="24.4" r="1.2" fill="#ffffff"/>'
+    + '<path d="M19.8 22.8 L18.2 21.2 M22.3 21.6 L21.5 19.6" stroke="#191919" stroke-width="1.6" stroke-linecap="round"/>'
+    + '<path d="M44.2 22.8 L45.8 21.2 M41.7 21.6 L42.5 19.6" stroke="#191919" stroke-width="1.6" stroke-linecap="round"/>'
+    /* стрелки на носу, как у обычных часов */
+    + '<path d="M32 34.5 L32 24" stroke="#ff7a00" stroke-width="2.6" stroke-linecap="round"/>'
+    + '<path d="M32 34.5 L39.5 34.5" stroke="#ff7a00" stroke-width="2.6" stroke-linecap="round"/>'
+    + '<circle cx="32" cy="34.5" r="2" fill="#ff7a00"/>'
+    /* румянец */
+    + '<ellipse cx="15.5" cy="36" rx="3.6" ry="2.2" fill="#ff7a00" opacity=".35"/>'
+    + '<ellipse cx="48.5" cy="36" rx="3.6" ry="2.2" fill="#ff7a00" opacity=".35"/>'
+    + mouth
     + '</svg>';
 }
 
