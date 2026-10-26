@@ -30,7 +30,7 @@ body{
 button{font-family:inherit;color:inherit}
 
 /* геометрические украшения */
-.sh{position:fixed;z-index:0;pointer-events:none;animation:float 8s ease-in-out infinite}
+.sh{position:fixed;z-index:0;pointer-events:none;opacity:.7;animation:float 8s ease-in-out infinite}
 .sh--tri{top:110px;right:-34px;width:120px;height:104px;background:var(--yellow);
   clip-path:polygon(50% 0,100% 100%,0 100%);--r:16deg}
 .sh--ring{bottom:80px;left:-52px;width:130px;height:130px;border-radius:50%;
@@ -39,6 +39,10 @@ button{font-family:inherit;color:inherit}
 .sh--sq{bottom:190px;right:-14px;width:44px;height:44px;background:var(--yellow);
   --r:14deg;animation-duration:6s}
 .sh--zig{top:250px;left:-16px;width:120px;height:24px;--r:0deg;animation-duration:9s}
+.sh--semi{bottom:36px;right:110px;width:58px;height:29px;background:var(--yellow);
+  border-radius:29px 29px 0 0;--r:-8deg;animation-duration:11s}
+.sh--dot{bottom:140px;left:90px;width:22px;height:22px;background:var(--orange);
+  border-radius:50%;--r:0deg;animation-duration:7s}
 @keyframes float{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(var(--r,0deg))}}
 @media (prefers-reduced-motion:reduce){.sh{animation:none}.confetti{display:none!important}}
 
@@ -73,7 +77,7 @@ button{font-family:inherit;color:inherit}
 .subject b{display:block;font-size:19px}
 .subject small{color:var(--gray);font-weight:700}
 .subject__icon{flex:0 0 54px;height:54px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;background:var(--yellow)}
+  display:flex;align-items:center;justify-content:center;line-height:1;font-size:24px;font-weight:900;background:var(--yellow)}
 .subject__icon--soft{background:var(--cream)}
 .subject__arrow{margin-left:auto;font-size:20px;font-weight:900;color:#c9c9c9}
 .subject:not(.subject--soon) .subject__arrow{color:var(--ink)}
@@ -93,6 +97,12 @@ button{font-family:inherit;color:inherit}
 .grade__num{flex:0 0 54px;height:54px;background:var(--paper);border-radius:14px;
   display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:900;transform:rotate(-4deg)}
 .grade small{display:block;font-size:13px;color:rgba(25,25,25,.72);font-weight:700;margin-top:2px}
+
+/* счётчик минут */
+.wallet{background:var(--paper);border-radius:20px;padding:14px 20px}
+.wallet__row{display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;font-size:16px;font-weight:800}
+.wallet__row b{font-size:22px;font-weight:900}
 
 /* карточки уроков */
 .card{position:relative;background:var(--paper);border-radius:20px;
@@ -164,13 +174,47 @@ button{font-family:inherit;color:inherit}
 .score small{display:block;font-size:14px;color:var(--gray);font-weight:700;margin-top:2px}
 .result-msg{font-size:17px;font-weight:800;margin:10px 0 6px}
 .score-sub{font-size:14px;color:var(--gray);font-weight:700;margin:0 0 22px}
+.earned{display:none;width:fit-content;margin:0 auto 18px;background:var(--yellow);
+  border-radius:999px;padding:6px 18px;font-size:15px;font-weight:900;transform:rotate(-2deg)}
+.earned.show{display:block}
+
+/* вход / аккаунт */
+.headrow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.acct{background:var(--paper);border-radius:12px;font-weight:900;font-size:14px;
+  padding:8px 13px;cursor:pointer;line-height:1.25;text-align:left;max-width:190px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acct:active{transform:translateY(2px)}
+.acct small{display:block;font-size:11px;color:var(--gray);font-weight:800}
+
+.modal{position:fixed;inset:0;z-index:10;display:none;align-items:flex-end;justify-content:center;
+  background:rgba(25,25,25,.55);padding:16px}
+.modal.show{display:flex}
+.modal__card{background:var(--paper);border-radius:22px;padding:22px;width:100%;max-width:420px;
+  animation:appear .2s ease both}
+.modal__card h3{margin:0 0 4px;font-size:21px;font-weight:900}
+.modal__sub{font-size:13px;color:var(--gray);font-weight:700;margin:0 0 16px;line-height:1.4}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;font-weight:800;color:var(--gray);
+  margin-bottom:5px;text-transform:uppercase;letter-spacing:1.5px}
+.field input{width:100%;font-size:19px;font-weight:800;padding:11px 12px;border-radius:12px;
+  background:var(--cream);outline:none;border:none}
+.field input:focus{background:#ffe9a8}
+.gradepick{display:flex;gap:10px}
+.gradepick button{flex:1;font-size:16px;font-weight:900;padding:11px 8px;border-radius:12px;
+  background:var(--cream);cursor:pointer}
+.gradepick button.sel{background:var(--yellow)}
+.form-err{display:none;margin:0 0 12px;font-size:14px;font-weight:800;color:var(--red);
+  background:var(--red-bg);border-radius:10px;padding:8px 12px;line-height:1.35}
+.form-err.show{display:block}
+.linkbtn{display:block;width:100%;margin-top:12px;background:none;border:none;font-size:14px;
+  font-weight:800;color:var(--orange);cursor:pointer;padding:6px}
+.codecard{font-size:34px;font-weight:900;letter-spacing:6px;text-align:center;
+  background:var(--cream);border-radius:14px;padding:14px;margin:0 0 16px}
 
 /* конфетти */
 .confetti{position:fixed;inset:0;pointer-events:none;z-index:6;overflow:hidden}
 .confetti i{position:absolute;top:-24px;animation:fall linear infinite}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
-
-.footer{margin-top:40px;text-align:center;color:var(--gray);font-size:12px;font-weight:700}
 </style>
 </head>
 <body>
@@ -180,20 +224,23 @@ button{font-family:inherit;color:inherit}
 <div class="sh sh--ring" aria-hidden="true"></div>
 <div class="sh sh--dia" aria-hidden="true"></div>
 <div class="sh sh--sq" aria-hidden="true"></div>
+<div class="sh sh--semi" aria-hidden="true"></div>
+<div class="sh sh--dot" aria-hidden="true"></div>
 <svg class="sh sh--zig" viewBox="0 0 120 24" aria-hidden="true"><path d="M2 12 L12 2 L22 12 L32 2 L42 12 L52 2 L62 12 L72 2 L82 12 L92 2 L102 12 L112 2 L120 10" fill="none" stroke="#ff7a00" stroke-width="6" stroke-linecap="round"/></svg>
 
 <div class="confetti" id="confetti" aria-hidden="true"></div>
 
 <div class="app">
-  <header>
+  <header class="headrow">
     <div class="logo">Обучалка</div>
+    <button class="acct" id="acct-btn" style="display:none" onclick="openAuth()"></button>
   </header>
 
   <!-- Экран 1: выбор класса -->
   <section class="screen on" id="sc-home">
     <div class="hero">
       <span id="hero-mascot"></span>
-      <h1>Привет! Выбери класс</h1>
+      <h1 id="hero-title">Привет! Выбери класс</h1>
     </div>
     <p class="section-title">Класс</p>
     <button class="grade" onclick="openSubject('3')">
@@ -204,6 +251,11 @@ button{font-family:inherit;color:inherit}
       <span class="grade__num">6</span>
       <span>Шестой класс</span>
     </button>
+    <p class="section-title">Минуты</p>
+    <div class="wallet">
+      <div class="wallet__row"><span>Накопилось</span><b id="min-total">0 минут</b></div>
+      <div class="wallet__row" id="sync-row" style="display:none"><span>Прогресс</span><b id="sync-state" style="font-size:14px"></b></div>
+    </div>
   </section>
 
   <!-- Экран 2: выбор предмета -->
@@ -214,7 +266,7 @@ button{font-family:inherit;color:inherit}
     </div>
     <p class="section-title">Выбери предмет</p>
     <button class="subject" onclick="openTopics()">
-      <span class="subject__icon">÷</span>
+      <span class="subject__icon"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><circle cx="12" cy="6" r="2" fill="currentColor"/><rect x="6" y="10.8" width="12" height="2.4" rx="1.2" fill="currentColor"/><circle cx="12" cy="18" r="2" fill="currentColor"/></svg></span>
       <span><b>Математика</b><small>темы и повторение</small></span>
       <span class="subject__arrow">→</span>
     </button>
@@ -259,13 +311,54 @@ button{font-family:inherit;color:inherit}
       <div class="score" id="score"></div>
       <div class="result-msg" id="result-msg"></div>
       <div class="score-sub" id="score-sub"></div>
+      <div class="earned" id="earned-min"></div>
       <button class="btn btn--o" onclick="startLesson(li)">Пройти снова</button>
       <button class="btn btn--ghost" onclick="openTopics()">К списку тем</button>
       <button class="btn btn--ghost" onclick="go('sc-home')">На главную</button>
     </div>
   </section>
 
-  <footer class="footer">«Обучалка» · прототип · сделано для телефона</footer>
+  <!-- Вход / аккаунт -->
+  <div class="modal" id="auth-modal" onclick="if(event.target===this)closeAuth()">
+    <div class="modal__card">
+      <div id="auth-form">
+        <h3 id="auth-title">Новый аккаунт</h3>
+        <p class="modal__sub" id="auth-sub">Имя, код и класс — и звёзды с минутами будут с любого устройства</p>
+        <div class="field">
+          <label for="f-name">Имя</label>
+          <input id="f-name" type="text" maxlength="16" autocomplete="off" autocapitalize="off"
+            autocorrect="off" spellcheck="false" enterkeyhint="next" placeholder="Например, Миша">
+        </div>
+        <div class="field">
+          <label for="f-code">Секретный код — 6 цифр</label>
+          <input id="f-code" type="text" inputmode="numeric" maxlength="6" autocomplete="off"
+            placeholder="Например, 246810">
+        </div>
+        <div class="field" id="f-grade">
+          <label>Класс</label>
+          <div class="gradepick">
+            <button type="button" id="gp-3" onclick="pickGrade('3')">3 класс</button>
+            <button type="button" id="gp-6" onclick="pickGrade('6')">6 класс</button>
+          </div>
+        </div>
+        <div class="form-err" id="auth-err" role="alert"></div>
+        <button class="btn" id="auth-submit" onclick="submitAuth()">Создать аккаунт</button>
+        <button class="linkbtn" id="auth-toggle" onclick="toggleAuthMode()">Уже есть аккаунт? Войти</button>
+      </div>
+      <div id="acct-view" style="display:none">
+        <h3 id="acct-name"></h3>
+        <p class="modal__sub" id="acct-sub"></p>
+        <button class="btn btn--o" onclick="switchPlayer()">Сменить игрока</button>
+        <button class="linkbtn" onclick="closeAuth()">Закрыть</button>
+      </div>
+      <div id="code-created" style="display:none">
+        <h3>Аккаунт создан!</h3>
+        <p class="modal__sub" id="cc-sub"></p>
+        <div class="codecard" id="cc-code"></div>
+        <button class="btn btn--o" onclick="closeAuth()">Играть!</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -278,7 +371,7 @@ var LESSONS = {
       {
         title: "Изучи: Сложение и вычитание",
         desc: "Первая тема третьего класса: складываем и вычитаем числа до 100.",
-        meta: "10 заданий · ≈ 10 минут",
+        meta: "10 заданий · 10 минут",
         im: "numeric",
         tasks: [
           { q: "Вычисли:\n36 + 7", a: ["43"] },
@@ -296,7 +389,7 @@ var LESSONS = {
       {
         title: "Повторение",
         desc: "Умножение и деление, задачи, периметр и единицы времени — главное из программы третьего класса.",
-        meta: "10 заданий · ≈ 10 минут",
+        meta: "10 заданий · 10 минут",
         im: "numeric",
         tasks: [
           { q: "Вычисли:\n7 · 8", a: ["56"] },
@@ -319,7 +412,7 @@ var LESSONS = {
       {
         title: "Изучи: Делимость чисел",
         desc: "Первая тема шестого класса: делители, кратные и признаки делимости.",
-        meta: "10 заданий · ≈ 15 минут",
+        meta: "10 заданий · 15 минут",
         im: "numeric",
         tasks: [
           { q: "Какое из чисел является делителем числа 12?", type: "choice", options: ["5", "6", "7", "8"], a: ["6"] },
@@ -337,7 +430,7 @@ var LESSONS = {
       {
         title: "Повторение",
         desc: "Дроби, отрицательные числа, проценты и пропорции — главное из программы шестого класса.",
-        meta: "10 заданий · ≈ 15 минут",
+        meta: "10 заданий · 15 минут",
         im: "text",
         tasks: [
           { q: "Вычисли:\n−5 + 12", a: ["7"] },
@@ -364,9 +457,14 @@ function go(id){
   document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("on"); });
   $(id).classList.add("on");
   window.scrollTo(0, 0);
+  if (id === "sc-home") renderMinutes();
 }
 function esc(s){
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function plural(n, one, few, many){
+  var a = n % 10, b = n % 100;
+  return (a === 1 && b !== 11) ? one : (a >= 2 && a <= 4 && (b < 12 || b > 14)) ? few : many;
 }
 
 /* оранжевая звезда вместо робота */
@@ -388,6 +486,15 @@ function best(g, i){
     return v > 5 ? 0 : v; /* значения старого формата («X из 10») отбрасываем */
   } catch (e){ return 0; }
 }
+/* минуты: лучшая оценка урока × 2; баланс класса — сумма по всем его урокам */
+function totalMinutes(g){
+  return LESSONS[g].lessons.reduce(function(s, _, i){ return s + best(g, i) * 2; }, 0);
+}
+function renderMinutes(){
+  var m = totalMinutes("3") + totalMinutes("6");
+  $("min-total").textContent = m + " " + plural(m, "минута", "минуты", "минут");
+  if (cloudDirty && currentUser && window.cloud) cloudPushNow(); /* дотолкнуть несохранённое */
+}
 /* незавершённый урок: где остановились и сколько уже верно */
 function progKey(g, i){ return "obuchalka_prog_" + g + "_" + i; }
 function loadProg(g, i){
@@ -400,6 +507,7 @@ function loadProg(g, i){
 }
 function saveProg(i){
   try { localStorage.setItem(progKey(grade, li), JSON.stringify({ i: i, s: score, m: mistakes })); } catch (e){}
+  cloudPushSoon();
 }
 function clearProg(g, i){ try { localStorage.removeItem(progKey(g, i)); } catch (e){} }
 function openTopics(){
@@ -547,11 +655,14 @@ function markFor(R){ return Math.max(1, 5 - Math.floor(R / 2)); }
 function finish(){
   clearProg(grade, li);
   var L = LESSONS[grade].lessons[li], n = L.tasks.length;
-  var mark = markFor(mistakes);
-  try {
-    var k = "obuchalka_best_" + grade + "_" + li, b = best(grade, li);
-    if (mark > b) localStorage.setItem(k, mark);
-  } catch (e){}
+  var mark = markFor(mistakes), prevBest = best(grade, li);
+  if (mark > prevBest){ setBest(grade, li, mark); cloudPushNow(); }
+  /* минуты: только за улучшение лучшей оценки, повторный проход не фармит */
+  var addMin = Math.max(0, mark - prevBest) * 2, earned = $("earned-min");
+  if (addMin > 0){
+    earned.textContent = "+" + addMin + " " + plural(addMin, "минута", "минуты", "минут") + " к экранному времени";
+    earned.classList.add("show");
+  } else earned.classList.remove("show");
   var stars = mark;
   var msgs = {
     1: "Не беда! Пройди урок ещё раз — получится.",
@@ -587,7 +698,280 @@ function confetti(){
   }
 }
 
+/* ===== аккаунт и облако ===== */
+var currentUser = null, authMode = "reg", authGrade = null;
+
+function renderAuthUI(){
+  var btn = $("acct-btn");
+  if (!(window.cloud && cloud.available)){ btn.style.display = "none"; return; }
+  btn.style.display = "";
+  if (currentUser){
+    btn.innerHTML = esc(currentUser.name) + "<small>" + esc(String(currentUser.grade)) + " класс · сменить</small>";
+  } else btn.textContent = "Войти";
+  $("hero-title").textContent = currentUser
+    ? "Привет, " + currentUser.name + "!"
+    : "Привет! Выбери класс";
+  renderMinutes();
+}
+function showLoginForm(){
+  $("auth-form").style.display = "";
+  $("acct-view").style.display = "none";
+  $("code-created").style.display = "none";
+  setAuthMode("login");
+  $("auth-modal").classList.add("show");
+  $("f-name").focus();
+}
+function openAuth(){
+  $("code-created").style.display = "none";
+  if (currentUser){
+    $("acct-name").textContent = currentUser.name;
+    $("acct-sub").textContent = currentUser.grade + " класс · звёзды и минуты сохраняются в облаке";
+    $("auth-form").style.display = "none";
+    $("acct-view").style.display = "";
+    $("auth-modal").classList.add("show");
+  } else showLoginForm();
+}
+function closeAuth(){ $("auth-modal").classList.remove("show"); }
+function setAuthMode(m){
+  authMode = m;
+  var reg = m === "reg";
+  $("auth-title").textContent = reg ? "Новый аккаунт" : "Вход";
+  $("auth-sub").textContent = reg
+    ? "Имя, код и класс — и звёзды с минутами будут с любого устройства"
+    : "Войди — и твои звёзды и минуты будут с тобой на любом устройстве";
+  $("f-grade").style.display = reg ? "" : "none";
+  $("auth-submit").textContent = reg ? "Создать аккаунт" : "Войти";
+  $("auth-toggle").textContent = reg ? "Уже есть аккаунт? Войти" : "Нет аккаунта? Создать";
+  $("auth-err").classList.remove("show");
+}
+function toggleAuthMode(){ setAuthMode(authMode === "reg" ? "login" : "reg"); }
+function pickGrade(g){
+  authGrade = g;
+  $("gp-3").classList.toggle("sel", g === "3");
+  $("gp-6").classList.toggle("sel", g === "6");
+}
+function authError(msg){ var e = $("auth-err"); e.textContent = msg; e.classList.add("show"); }
+function submitAuth(){
+  var name = $("f-name").value.trim(), code = $("f-code").value.trim();
+  if (name.length < 2) return authError("Напиши имя — минимум 2 буквы");
+  if (!/^\d{6}$/.test(code)) return authError("Код — 6 цифр");
+  if (authMode === "reg" && !authGrade) return authError("Выбери класс");
+  var btn = $("auth-submit"), reg = authMode === "reg";
+  btn.disabled = true;
+  btn.textContent = reg ? "Создаём…" : "Заходим…";
+  var p = reg ? cloud.register(name, code, authGrade) : cloud.login(name, code);
+  p.then(function(){
+    if (reg) showCodeCreated(name, code); else closeAuth();
+  }, function(e){
+    authError(e && e.message ? e.message : "Что-то пошло не так. Попробуй ещё раз или позови взрослого");
+  }).finally(function(){
+    btn.disabled = false;
+    btn.textContent = reg ? "Создать аккаунт" : "Войти";
+    $("f-code").value = "";
+  });
+}
+function showCodeCreated(name, code){
+  $("cc-sub").innerHTML = "Игрок: <b>" + esc(name) + "</b>. Твой секретный код — покажи взрослому, пусть запишет:";
+  $("cc-code").textContent = code;
+  $("auth-form").style.display = "none";
+  $("acct-view").style.display = "none";
+  $("code-created").style.display = "";
+  $("auth-modal").classList.add("show");
+}
+function switchPlayer(){
+  /* локально сразу; серверный logout уходит фоном и не зависит от сети */
+  cloud.logout();
+  showLoginForm();
+}
+["f-name", "f-code"].forEach(function(id){
+  $(id).addEventListener("keydown", function(e){
+    if (e.key === "Enter"){ e.preventDefault(); submitAuth(); }
+  });
+});
+
+/* синхронизация: облако ↔ localStorage */
+function setBest(g, i, mark){
+  try { localStorage.setItem("obuchalka_best_" + g + "_" + i, mark); } catch (e){}
+}
+function forEachLesson(fn){
+  ["3", "6"].forEach(function(g){ LESSONS[g].lessons.forEach(function(_, i){ fn(g, i); }); });
+}
+function collectState(){
+  var st = { best: {}, prog: {} };
+  forEachLesson(function(g, i){
+    var b = best(g, i); if (b) st.best[g + "_" + i] = b;
+    var p = loadProg(g, i); if (p) st.prog[g + "_" + i] = p;
+  });
+  return st;
+}
+function clearLocalProgress(){
+  forEachLesson(function(g, i){
+    try { localStorage.removeItem("obuchalka_best_" + g + "_" + i); } catch (e){}
+    clearProg(g, i);
+  });
+}
+function applyRemoteState(st){
+  var rBest = st.best || {}, rProg = st.prog || {};
+  forEachLesson(function(g, i){
+    var rb = +rBest[g + "_" + i] || 0;
+    if (rb > best(g, i)) setBest(g, i, rb);
+    if (best(g, i) > 0){ clearProg(g, i); return; } /* пройденный урок — «незавершёнку» не воскрешаем */
+    var lp = loadProg(g, i), rp = rProg[g + "_" + i];
+    if (rp && (!lp || rp.i > lp.i || (rp.i === lp.i && rp.s > lp.s))){
+      try { localStorage.setItem(progKey(g, i), JSON.stringify(rp)); } catch (e){}
+    }
+  });
+}
+var cloudTimer = null, cloudDirty = false;
+function cloudSetSync(state){
+  var row = $("sync-row");
+  if (!row) return;
+  if (!currentUser){ row.style.display = "none"; return; }
+  row.style.display = "";
+  var v = $("sync-state");
+  if (state === "ok"){ v.textContent = "сохранён ✓"; v.style.color = "var(--green)"; cloudDirty = false; }
+  else if (state === "wait"){ v.textContent = "сохраняем…"; v.style.color = "var(--gray)"; }
+  else { v.textContent = "сохраним позже"; v.style.color = "var(--gray)"; cloudDirty = true; }
+}
+function cloudPushNow(){
+  if (!(currentUser && window.cloud)) return;
+  clearTimeout(cloudTimer);
+  cloudDirty = false;
+  cloud.push(collectState()).then(function(merged){
+    if (merged && merged.best){ applyRemoteState(merged); renderMinutes(); }
+    cloudSetSync("ok");
+  }).catch(function(){ cloudSetSync("later"); });
+}
+function cloudPushSoon(){
+  if (!(currentUser && window.cloud)) return;
+  clearTimeout(cloudTimer);
+  cloudTimer = setTimeout(cloudPushNow, 1500);
+}
+document.addEventListener("visibilitychange", function(){
+  if (!document.hidden && cloudDirty) cloudPushNow(); /* вернулись во вкладку — дотолкнуть */
+});
+document.addEventListener("cloud:user", function(e){
+  currentUser = e.detail.user;
+  renderAuthUI();
+  cloudSetSync(currentUser ? "wait" : "later");
+  if (!currentUser || !window.cloud) return;
+  var stored = "";
+  try { stored = localStorage.getItem("obuchalka_player") || ""; } catch (e2){}
+  var same = !currentUser.login || stored === currentUser.login;
+  try { localStorage.setItem("obuchalka_player", currentUser.login || ""); } catch (e2){}
+  if (!same && stored) clearLocalProgress(); /* на устройстве играл другой — его прогресс уже в его облаке */
+  cloud.pull().then(function(remote){
+    if (remote) applyRemoteState(remote);
+    cloudPushNow();
+  }).catch(function(){ cloudSetSync("later"); }).finally(function(){
+    renderMinutes();
+    if ($("sc-topics").classList.contains("on")) openTopics();
+  });
+});
+
 $("hero-mascot").innerHTML = mascot("happy", 88);
+renderMinutes();
+</script>
+
+<script>
+/* ===== НАСТРОЙКА СИНХРОНИЗАЦИИ =====
+   Адрес API на сервере основателя (появится при развёртывании, фаза 3 плана
+   «бэкенд-на-своём-сервере»). null — сайт работает без входа и облака, как раньше. */
+var API_URL = "https://187-126-7-194.sslip.io"; /* сервер основателя (VPS Hostinger) */
+</script>
+<script>
+"use strict";
+(function(){
+  if (!window.API_URL){ window.cloud = { available: false, user: null }; return; }
+  var TOKEN_KEY = "obuchalka_token";
+
+  function token(){ try { return localStorage.getItem(TOKEN_KEY); } catch (e){ return null; } }
+  function setToken(v){
+    try { if (v) localStorage.setItem(TOKEN_KEY, v); else localStorage.removeItem(TOKEN_KEY); } catch (e){}
+  }
+  function dispatch(user){
+    window.cloud.user = user;
+    document.dispatchEvent(new CustomEvent("cloud:user", { detail: { user: user } }));
+  }
+  function dropSession(){ setToken(null); dispatch(null); }
+
+  /* запрос к API; cb(статус, данные); статус 0 — сети нет или таймаут 15 с */
+  function api(method, path, body, cb){
+    var ctrl = window.AbortController ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, 15000) : null;
+    var headers = { "Content-Type": "application/json" };
+    if (token()) headers["Authorization"] = "Bearer " + token();
+    fetch(API_URL + path, {
+      method: method,
+      headers: headers,
+      body: body ? JSON.stringify(body) : undefined,
+      signal: ctrl ? ctrl.signal : undefined
+    }).then(function(r){
+      r.json().catch(function(){ return {}; }).then(function(data){ cb(r.status, data); });
+    }).catch(function(){ cb(0, {}); }).finally(function(){ if (timer) clearTimeout(timer); });
+  }
+
+  function apiMsg(st){
+    if (st === 0) return "Сервер не отвечает. Проверь интернет и попробуй ещё раз";
+    if (st === 400) return "Что-то не так с данными. Позови взрослого";
+    if (st === 401) return "Имя или код не подошли. Попробуй ещё раз или позови взрослого";
+    if (st === 409) return "Такое имя уже занято. Если это ты — нажми «Войти»";
+    if (st === 429) return "Слишком много попыток. Подожди немного";
+    return "Что-то пошло не так. Попробуй ещё раз или позови взрослого";
+  }
+
+  window.cloud = {
+    available: true,
+    user: null,
+    register: function(name, code, grade){
+      return new Promise(function(resolve, reject){
+        api("POST", "/api/register", { name: name, code: code, grade: grade }, function(st, data){
+          if (st === 200 && data.token){ setToken(data.token); dispatch(data.user); resolve(); }
+          else reject(new Error(apiMsg(st)));
+        });
+      });
+    },
+    login: function(name, code){
+      return new Promise(function(resolve, reject){
+        api("POST", "/api/login", { name: name, code: code }, function(st, data){
+          if (st === 200 && data.token){ setToken(data.token); dispatch(data.user); resolve(); }
+          else reject(new Error(apiMsg(st)));
+        });
+      });
+    },
+    logout: function(){
+      api("POST", "/api/logout", null, function(){}); /* уходит фоном, токен ещё жив */
+      setToken(null);
+      dispatch(null);
+      return Promise.resolve();
+    },
+    pull: function(){
+      return new Promise(function(resolve, reject){
+        api("GET", "/api/progress", undefined, function(st, data){
+          if (st === 200) resolve(data);
+          else { if (st === 401) dropSession(); reject(new Error("pull " + st)); }
+        });
+      });
+    },
+    push: function(state){
+      return new Promise(function(resolve, reject){
+        api("PUT", "/api/progress", state, function(st, data){
+          if (st === 200) resolve(data);
+          else { if (st === 401) dropSession(); reject(new Error("push " + st)); }
+        });
+      });
+    }
+  };
+
+  /* восстановление сессии при открытии сайта */
+  if (token()){
+    api("GET", "/api/me", undefined, function(st, data){
+      if (st === 200 && data.user) dispatch(data.user);
+      else if (st === 401) dropSession();
+      /* сеть/5xx — тихо работаем локально, синхронизируемся позже */
+    });
+  } else dispatch(null);
+})();
 </script>
 </body>
 </html>
