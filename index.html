@@ -29,20 +29,29 @@ body{
 }
 button{font-family:inherit;color:inherit}
 
-/* геометрические украшения: крупные и бледные, мягкий фон */
+/* геометрические украшения: крупные и бледные, мягкий фон, фигуры по всему экрану */
 .sh{position:fixed;z-index:0;pointer-events:none;opacity:.2;animation:float 8s ease-in-out infinite}
-.sh--tri{top:40px;right:-110px;width:320px;height:280px;background:var(--yellow);
+.sh--tri{top:40px;right:-110px;width:360px;height:315px;background:var(--yellow);
   clip-path:polygon(50% 0,100% 100%,0 100%);--r:16deg}
-.sh--ring{bottom:30px;left:-150px;width:340px;height:340px;border-radius:50%;
-  border:32px solid var(--orange);--r:0deg;animation-duration:10s}
 .sh--dia{top:40%;left:-90px;width:170px;height:170px;background:var(--orange);--r:45deg}
 .sh--sq{bottom:110px;right:-45px;width:120px;height:120px;background:var(--yellow);
   --r:14deg;animation-duration:6s}
-.sh--zig{top:170px;left:-40px;width:300px;height:60px;--r:0deg;animation-duration:9s}
+.sh--zig{top:170px;left:-150px;width:300px;height:60px;--r:0deg;animation-duration:9s}
+.sh--ball{top:173px;left:128px;width:44px;height:44px;background:var(--yellow);
+  border-radius:50%;--r:0deg;animation-duration:9s}
 .sh--semi{bottom:24px;right:210px;width:150px;height:75px;background:var(--yellow);
   border-radius:75px 75px 0 0;--r:-8deg;animation-duration:11s}
+.sh--plus{bottom:70px;right:170px;width:44px;height:44px;--r:0deg;animation-duration:12s;
+  background:linear-gradient(var(--orange),var(--orange)) center/100% 34% no-repeat,
+    linear-gradient(var(--orange),var(--orange)) center/34% 100% no-repeat}
 .sh--dot{bottom:150px;left:40px;width:60px;height:60px;background:var(--orange);
   border-radius:50%;--r:0deg;animation-duration:7s}
+.sh--tri2{top:255px;left:38%;width:95px;height:84px;background:var(--orange);
+  clip-path:polygon(50% 0,100% 100%,0 100%);--r:-14deg;animation-duration:8s}
+.sh--ring2{top:46%;right:15%;width:80px;height:80px;border-radius:50%;
+  border:13px solid var(--orange);--r:0deg;animation-duration:10s}
+.sh--semi2{top:64%;left:30%;width:110px;height:55px;background:var(--orange);
+  border-radius:110px 110px 0 0;--r:9deg;animation-duration:11s}
 @keyframes float{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(var(--r,0deg))}}
 @media (prefers-reduced-motion:reduce){.sh{animation:none}.confetti{display:none!important}}
 
@@ -87,16 +96,28 @@ button{font-family:inherit;color:inherit}
   font-size:11px;font-weight:900;padding:2px 10px;display:inline-block;margin-left:8px;
   transform:rotate(4deg);vertical-align:middle}
 
-/* классы */
-.grade{display:flex;align-items:center;gap:16px;width:100%;background:var(--yellow);
-  border-radius:20px;padding:18px 20px;
-  font-size:21px;font-weight:900;cursor:pointer;margin:18px 0;transition:transform .08s;
-  text-align:left}
-.grade:active{transform:translateY(2px)}
-.grade--o{background:var(--orange)}
-.grade__num{flex:0 0 54px;height:54px;background:var(--paper);border-radius:14px;
-  display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:900;transform:rotate(-4deg)}
-.grade small{display:block;font-size:13px;color:rgba(25,25,25,.72);font-weight:700;margin-top:2px}
+/* мини-опрос после регистрации: возраст и класс — списками */
+.selwrap{margin:0 0 16px}
+.selwrap label{display:block;font-size:11px;font-weight:800;color:var(--gray);
+  margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px}
+.survey-hint{font-size:13px;color:var(--gray);font-weight:700;margin:10px 0 16px;line-height:1.45}
+
+/* раскрывающиеся списки — в стиле «Минутки» */
+.dd{position:relative}
+.dd__btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-size:19px;font-weight:800;padding:12px 16px;border-radius:16px;background:var(--cream);
+  border:none;cursor:pointer;color:inherit;font-family:inherit;line-height:1.2}
+.dd__btn:focus,.dd--open .dd__btn{background:#ffe9a8}
+.dd__val--ph{color:var(--gray);font-weight:700}
+.dd__btn svg{flex:0 0 auto;color:var(--orange);transition:transform .15s}
+.dd--open .dd__btn svg{transform:rotate(180deg)}
+.dd__menu{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:8;background:var(--paper);
+  border-radius:16px;padding:6px;box-shadow:0 10px 24px rgba(25,25,25,.16);animation:appear .15s ease both}
+.dd__opt{display:block;width:100%;text-align:left;font-size:17px;font-weight:800;padding:11px 14px;
+  border-radius:12px;background:none;border:none;cursor:pointer;color:inherit;font-family:inherit}
+.dd__opt.sel{background:var(--yellow)}
+.dd--head .dd__btn{width:auto;font-size:14px;font-weight:900;padding:9px 12px;border-radius:12px;background:var(--paper)}
+.dd--head .dd__menu{left:auto;right:0;width:160px}
 
 /* счётчик минут */
 .wallet{background:var(--paper);border-radius:20px;padding:14px 20px}
@@ -180,6 +201,7 @@ button{font-family:inherit;color:inherit}
 
 /* вход / аккаунт */
 .headrow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.headctl{display:flex;align-items:center;gap:10px}
 .acct{background:var(--paper);border-radius:12px;font-weight:900;font-size:14px;
   padding:8px 13px;cursor:pointer;line-height:1.25;text-align:left;max-width:190px;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -199,10 +221,6 @@ button{font-family:inherit;color:inherit}
 .field input{width:100%;font-size:19px;font-weight:800;padding:11px 12px;border-radius:12px;
   background:var(--cream);outline:none;border:none}
 .field input:focus{background:#ffe9a8}
-.gradepick{display:flex;gap:10px}
-.gradepick button{flex:1;font-size:16px;font-weight:900;padding:11px 8px;border-radius:12px;
-  background:var(--cream);cursor:pointer}
-.gradepick button.sel{background:var(--yellow)}
 .form-err{display:none;margin:0 0 12px;font-size:14px;font-weight:800;color:var(--red);
   background:var(--red-bg);border-radius:10px;padding:8px 12px;line-height:1.35}
 .form-err.show{display:block}
@@ -221,60 +239,71 @@ button{font-family:inherit;color:inherit}
 <noscript>Для работы сайта нужен включённый JavaScript.</noscript>
 
 <div class="sh sh--tri" aria-hidden="true"></div>
-<div class="sh sh--ring" aria-hidden="true"></div>
 <div class="sh sh--dia" aria-hidden="true"></div>
 <div class="sh sh--sq" aria-hidden="true"></div>
 <div class="sh sh--semi" aria-hidden="true"></div>
+<div class="sh sh--plus" aria-hidden="true"></div>
 <div class="sh sh--dot" aria-hidden="true"></div>
+<div class="sh sh--tri2" aria-hidden="true"></div>
+<div class="sh sh--ring2" aria-hidden="true"></div>
+<div class="sh sh--semi2" aria-hidden="true"></div>
 <svg class="sh sh--zig" viewBox="0 0 120 24" aria-hidden="true"><path d="M2 12 L12 2 L22 12 L32 2 L42 12 L52 2 L62 12 L72 2 L82 12 L92 2 L102 12 L112 2 L120 10" fill="none" stroke="#ff7a00" stroke-width="6" stroke-linecap="round"/></svg>
+<div class="sh sh--ball" aria-hidden="true"></div>
 
 <div class="confetti" id="confetti" aria-hidden="true"></div>
 
 <div class="app">
   <header class="headrow">
     <div class="logo">Минутка</div>
-    <button class="acct" id="acct-btn" style="display:none" onclick="openAuth()"></button>
+    <div class="headctl">
+      <div class="dd dd--head" id="grade-select" style="display:none" aria-label="Выбор класса"></div>
+      <button class="acct" id="acct-btn" style="display:none" onclick="openAuth()"></button>
+    </div>
   </header>
 
-  <!-- Экран 1: выбор класса -->
+  <!-- Экран 1: приветствие — войти или зарегистрироваться -->
   <section class="screen on" id="sc-home">
     <div class="hero">
       <span id="hero-mascot"></span>
-      <h1 id="hero-title">Привет! Выбери класс</h1>
+      <h1 id="hero-title">Привет! Это «Минутка»</h1>
     </div>
-    <p class="section-title">Класс</p>
-    <button class="grade" onclick="openSubject('3')">
-      <span class="grade__num">3</span>
-      <span>Третий класс</span>
-    </button>
-    <button class="grade grade--o" onclick="openSubject('6')">
-      <span class="grade__num">6</span>
-      <span>Шестой класс</span>
-    </button>
+    <p class="section-title">Начнём</p>
+    <button class="btn" id="btn-go-reg" onclick="openRegister()">Зарегистрироваться</button>
+    <button class="btn btn--ghost" id="btn-go-login" onclick="showLoginForm()">Войти</button>
+    <p class="survey-hint">Зарегистрируйся один раз — и твои звёзды и минуты будут с тобой на любом устройстве.</p>
+  </section>
+
+  <!-- Экран 2: первый опрос — возраст и класс -->
+  <section class="screen" id="sc-survey">
+    <div class="hero">
+      <span id="survey-mascot"></span>
+      <h1>Давай познакомимся</h1>
+    </div>
+    <div class="selwrap">
+      <label>Сколько тебе лет?</label>
+      <div class="dd" id="dd-age" aria-label="Возраст"></div>
+    </div>
+    <div class="selwrap">
+      <label>Твой класс</label>
+      <div class="dd" id="dd-grade" aria-label="Класс"></div>
+    </div>
+    <p class="survey-hint">Сейчас в «Минутке» есть уроки для 3 и 6 класса.</p>
+    <div class="form-err" id="survey-err" role="alert"></div>
+    <button class="btn btn--o" onclick="startSurvey()">Начать учиться →</button>
+  </section>
+
+  <!-- Экран 3: минуты и выбор предмета -->
+  <section class="screen" id="sc-subject">
+    <div class="topbar">
+      <h2 id="subj-top-title"></h2>
+    </div>
     <p class="section-title">Минуты</p>
     <div class="wallet">
       <div class="wallet__row"><span>Накопилось</span><b id="min-total">0 минут</b></div>
       <div class="wallet__row" id="sync-row" style="display:none"><span>Прогресс</span><b id="sync-state" style="font-size:14px"></b></div>
     </div>
-  </section>
-
-  <!-- Экран 2: выбор предмета -->
-  <section class="screen" id="sc-subject">
-    <div class="topbar">
-      <button class="back" onclick="go('sc-home')">←</button>
-      <h2 id="subj-top-title"></h2>
-    </div>
     <p class="section-title">Выбери предмет</p>
-    <button class="subject" onclick="openTopics()">
-      <span class="subject__icon"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><circle cx="12" cy="6" r="2" fill="currentColor"/><rect x="6" y="10.8" width="12" height="2.4" rx="1.2" fill="currentColor"/><circle cx="12" cy="18" r="2" fill="currentColor"/></svg></span>
-      <span><b>Математика</b><small>темы и повторение</small></span>
-      <span class="subject__arrow">→</span>
-    </button>
-    <button class="subject subject--soon" disabled>
-      <span class="subject__icon subject__icon--soft">?</span>
-      <span><b>Логика<span class="soon">скоро</span></b><small>в разработке</small></span>
-      <span class="subject__arrow">→</span>
-    </button>
+    <div id="subj-list"></div>
   </section>
 
   <!-- Экран 3: список тем -->
@@ -314,7 +343,7 @@ button{font-family:inherit;color:inherit}
       <div class="earned" id="earned-min"></div>
       <button class="btn btn--o" onclick="startLesson(li)">Пройти снова</button>
       <button class="btn btn--ghost" onclick="openTopics()">К списку тем</button>
-      <button class="btn btn--ghost" onclick="go('sc-home')">На главную</button>
+      <button class="btn btn--ghost" onclick="openSubject(grade)">На главную</button>
     </div>
   </section>
 
@@ -323,7 +352,7 @@ button{font-family:inherit;color:inherit}
     <div class="modal__card">
       <div id="auth-form">
         <h3 id="auth-title">Новый аккаунт</h3>
-        <p class="modal__sub" id="auth-sub">Имя, код и класс — и звёзды с минутами будут с любого устройства</p>
+        <p class="modal__sub" id="auth-sub">Имя и секретный код — и звёзды с минутами будут с любого устройства</p>
         <div class="field">
           <label for="f-name">Имя</label>
           <input id="f-name" type="text" maxlength="16" autocomplete="off" autocapitalize="off"
@@ -334,15 +363,8 @@ button{font-family:inherit;color:inherit}
           <input id="f-code" type="text" inputmode="numeric" maxlength="6" autocomplete="off"
             placeholder="Например, 246810">
         </div>
-        <div class="field" id="f-grade">
-          <label>Класс</label>
-          <div class="gradepick">
-            <button type="button" id="gp-3" onclick="pickGrade('3')">3 класс</button>
-            <button type="button" id="gp-6" onclick="pickGrade('6')">6 класс</button>
-          </div>
-        </div>
         <div class="form-err" id="auth-err" role="alert"></div>
-        <button class="btn" id="auth-submit" onclick="submitAuth()">Создать аккаунт</button>
+        <button class="btn" id="auth-submit" onclick="submitAuth()">Зарегистрироваться</button>
         <button class="linkbtn" id="auth-toggle" onclick="toggleAuthMode()">Уже есть аккаунт? Войти</button>
       </div>
       <div id="acct-view" style="display:none">
@@ -355,7 +377,7 @@ button{font-family:inherit;color:inherit}
         <h3>Аккаунт создан!</h3>
         <p class="modal__sub" id="cc-sub"></p>
         <div class="codecard" id="cc-code"></div>
-        <button class="btn btn--o" onclick="closeAuth()">Играть!</button>
+        <button class="btn btn--o" onclick="afterRegister()">Играть!</button>
       </div>
     </div>
   </div>
@@ -451,13 +473,16 @@ var LESSONS = {
 
 var PRAISE = ["Верно! Отлично!", "Верно! Так держать!", "Верно! Ты растёшь!", "Верно! Круто!"];
 var grade = null, li = 0, idx = 0, score = 0, mistakes = 0, firstTry = true, answered = false, chosen = null;
+var localGrade = null; /* класс с опроса; уроки пока есть только для 3 и 6 */
+
+/* «ты сейчас в … классе» — предложный падеж */
+var GRADE_PREP = { 3: "в третьем", 6: "в шестом" };
 
 function $(id){ return document.getElementById(id); }
 function go(id){
   document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("on"); });
   $(id).classList.add("on");
   window.scrollTo(0, 0);
-  if (id === "sc-home") renderMinutes();
 }
 function esc(s){
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -500,9 +525,113 @@ function mascot(mood, size){
     + '</svg>';
 }
 
+/* раскрывающийся список в стиле «Минутки»: кнопка + карточка с вариантами */
+var DD_CLOSE = [];
+function dropdown(id, items, placeholder, onPick){
+  var root = $(id), val = null, open = false;
+  var arrow = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 9 L12 15 L18 9" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function draw(){
+    root.classList.toggle("dd--open", open);
+    var cur = null;
+    items.forEach(function(o){ if (o.v === val) cur = o; });
+    root.innerHTML = '<button type="button" class="dd__btn"><span class="dd__val'
+      + (cur ? "" : " dd__val--ph") + '">' + (cur ? cur.label : placeholder) + "</span>" + arrow + "</button>"
+      + '<div class="dd__menu" style="display:' + (open ? "" : "none") + '">'
+      + items.map(function(o){
+        return '<button type="button" class="dd__opt' + (o.v === val ? " sel" : "") + '" data-v="' + o.v + '">'
+          + o.label + "</button>";
+      }).join("") + "</div>";
+    var btn = root.querySelector(".dd__btn");
+    if (btn) btn.onclick = function(e){
+      e.stopPropagation();
+      var reopen = !open;
+      DD_CLOSE.forEach(function(close){ close(); }); /* открыт один список за раз */
+      open = reopen;
+      draw();
+    };
+    Array.prototype.forEach.call(root.querySelectorAll(".dd__opt"), function(b){
+      b.onclick = function(e){
+        e.stopPropagation();
+        open = false;
+        val = b.dataset.v;
+        draw();
+        if (onPick) onPick(val);
+      };
+    });
+  }
+  DD_CLOSE.push(function(){ if (open){ open = false; draw(); } });
+  document.addEventListener("click", function(){ if (open){ open = false; draw(); } });
+  draw();
+  return {
+    get: function(){ return val; },
+    set: function(v){ val = v; draw(); }
+  };
+}
+
+var GRADE_ITEMS = [{ v: "3", label: "3 класс" }, { v: "6", label: "6 класс" }];
+var AGE_ITEMS = [7, 8, 9, 10, 11, 12, 13].map(function(a){ return { v: String(a), label: a + " лет" }; });
+var ddAge = null, ddGrade = null, ddHeadGrade = null;
+
+/* первый опрос после регистрации: возраст и класс списками */
+function saveGrade(g){
+  localGrade = g;
+  try { localStorage.setItem("obuchalka_grade", g); } catch (e){}
+}
+function pushGrade(g){
+  if (!currentUser || !window.cloud || !cloud.setGrade || String(currentUser.grade) === g) return;
+  cloud.setGrade(g).then(function(u){ currentUser = u; renderAuthUI(); }).catch(function(){});
+}
+function startSurvey(){
+  var age = ddAge.get(), g = ddGrade.get(), err = $("survey-err");
+  if (!age || !g){
+    err.textContent = !age ? "Выбери, сколько тебе лет" : "Выбери класс";
+    err.classList.add("show");
+    return;
+  }
+  err.classList.remove("show");
+  try { localStorage.setItem("obuchalka_age", age); } catch (e){} /* возраст потом заменим датой рождения */
+  saveGrade(g);
+  pushGrade(g);
+  openSubject(g);
+}
+/* смена класса списком в шапке */
+function changeGrade(g){
+  if (g !== "3" && g !== "6") return;
+  saveGrade(g);
+  pushGrade(g);
+  openSubject(g);
+}
+function syncGradeSelect(){
+  var s = $("grade-select"), on = localGrade === "3" || localGrade === "6";
+  s.style.display = on ? "" : "none";
+  if (on) ddHeadGrade.set(localGrade);
+}
+function openRegister(){
+  $("auth-form").style.display = "";
+  $("acct-view").style.display = "none";
+  $("code-created").style.display = "none";
+  setAuthMode("reg");
+  $("auth-modal").classList.add("show");
+  $("f-name").focus();
+}
+/* «Играть!» после создания аккаунта: если класс ещё не выбран — к опросу */
+function afterRegister(){
+  closeAuth();
+  if (!localGrade) go("sc-survey");
+}
+
+var MATH_ICON = '<span class="subject__icon"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><circle cx="12" cy="6" r="2" fill="currentColor"/><rect x="6" y="10.8" width="12" height="2.4" rx="1.2" fill="currentColor"/><circle cx="12" cy="18" r="2" fill="currentColor"/></svg></span>';
 function openSubject(g){
+  if (!LESSONS[g]) return; /* уроки есть только для 3 и 6 */
   grade = g;
-  $("subj-top-title").textContent = LESSONS[g].gradeName;
+  $("subj-top-title").textContent = "Ты сейчас сидишь " + GRADE_PREP[g] + " классе";
+  $("subj-list").innerHTML =
+    '<button class="subject" onclick="openTopics()">' + MATH_ICON
+    + '<span><b>Математика</b><small>темы и повторение</small></span><span class="subject__arrow">→</span></button>'
+    + '<button class="subject subject--soon" disabled><span class="subject__icon subject__icon--soft">?</span>'
+    + '<span><b>Логика<span class="soon">скоро</span></b><small>в разработке</small></span><span class="subject__arrow">→</span></button>';
+  syncGradeSelect();
+  renderMinutes();
   go("sc-subject");
 }
 
@@ -725,18 +854,24 @@ function confetti(){
 }
 
 /* ===== аккаунт и облако ===== */
-var currentUser = null, authMode = "reg", authGrade = null;
+var currentUser = null, authMode = "reg";
 
 function renderAuthUI(){
-  var btn = $("acct-btn");
-  if (!(window.cloud && cloud.available)){ btn.style.display = "none"; return; }
-  btn.style.display = "";
-  if (currentUser){
-    btn.innerHTML = esc(currentUser.name) + "<small>" + esc(String(currentUser.grade)) + " класс · сменить</small>";
-  } else btn.textContent = "Войти";
+  var avail = !!(window.cloud && cloud.available);
+  $("acct-btn").style.display = avail ? "" : "none";
+  $("btn-go-reg").style.display = avail ? "" : "none";
+  $("btn-go-login").style.display = avail ? "" : "none";
+  if (avail){
+    var btn = $("acct-btn");
+    if (currentUser){
+      btn.innerHTML = esc(currentUser.name) + "<small>"
+        + (localGrade ? localGrade + " класс · сменить" : "сменить") + "</small>";
+    } else btn.textContent = "Войти";
+  }
   $("hero-title").textContent = currentUser
     ? "Привет, " + currentUser.name + "!"
-    : "Привет! Выбери класс";
+    : "Привет! Это «Минутка»";
+  syncGradeSelect();
   renderMinutes();
 }
 function showLoginForm(){
@@ -751,7 +886,7 @@ function openAuth(){
   $("code-created").style.display = "none";
   if (currentUser){
     $("acct-name").textContent = currentUser.name;
-    $("acct-sub").textContent = currentUser.grade + " класс · звёзды и минуты сохраняются в облаке";
+    $("acct-sub").textContent = (localGrade ? localGrade + " класс · " : "") + "звёзды и минуты сохраняются в облаке";
     $("auth-form").style.display = "none";
     $("acct-view").style.display = "";
     $("auth-modal").classList.add("show");
@@ -763,36 +898,32 @@ function setAuthMode(m){
   var reg = m === "reg";
   $("auth-title").textContent = reg ? "Новый аккаунт" : "Вход";
   $("auth-sub").textContent = reg
-    ? "Имя, код и класс — и звёзды с минутами будут с любого устройства"
+    ? "Имя и секретный код — и звёзды с минутами будут с любого устройства"
     : "Войди — и твои звёзды и минуты будут с тобой на любом устройстве";
-  $("f-grade").style.display = reg ? "" : "none";
-  $("auth-submit").textContent = reg ? "Создать аккаунт" : "Войти";
+  $("auth-submit").textContent = reg ? "Зарегистрироваться" : "Войти";
   $("auth-toggle").textContent = reg ? "Уже есть аккаунт? Войти" : "Нет аккаунта? Создать";
   $("auth-err").classList.remove("show");
 }
 function toggleAuthMode(){ setAuthMode(authMode === "reg" ? "login" : "reg"); }
-function pickGrade(g){
-  authGrade = g;
-  $("gp-3").classList.toggle("sel", g === "3");
-  $("gp-6").classList.toggle("sel", g === "6");
-}
 function authError(msg){ var e = $("auth-err"); e.textContent = msg; e.classList.add("show"); }
 function submitAuth(){
   var name = $("f-name").value.trim(), code = $("f-code").value.trim();
   if (name.length < 2) return authError("Напиши имя — минимум 2 буквы");
   if (!/^\d{6}$/.test(code)) return authError("Код — 6 цифр");
-  if (authMode === "reg" && !authGrade) return authError("Выбери класс");
   var btn = $("auth-submit"), reg = authMode === "reg";
   btn.disabled = true;
   btn.textContent = reg ? "Создаём…" : "Заходим…";
-  var p = reg ? cloud.register(name, code, authGrade) : cloud.login(name, code);
+  var p = reg ? cloud.register(name, code) : cloud.login(name, code);
   p.then(function(){
-    if (reg) showCodeCreated(name, code); else closeAuth();
+    if (reg){
+      showCodeCreated(name, code);
+      pushGrade(localGrade); /* если класс уже выбран — сразу в аккаунт */
+    } else closeAuth();
   }, function(e){
     authError(e && e.message ? e.message : "Что-то пошло не так. Попробуй ещё раз или позови взрослого");
   }).finally(function(){
     btn.disabled = false;
-    btn.textContent = reg ? "Создать аккаунт" : "Войти";
+    btn.textContent = reg ? "Зарегистрироваться" : "Войти";
     $("f-code").value = "";
   });
 }
@@ -878,9 +1009,25 @@ document.addEventListener("visibilitychange", function(){
 });
 document.addEventListener("cloud:user", function(e){
   currentUser = e.detail.user;
+  if (currentUser){
+    var g = currentUser.grade ? String(currentUser.grade) : null;
+    if (g === "3" || g === "6"){ /* класс аккаунта главнее местного выбора */
+      localGrade = g;
+      try { localStorage.setItem("obuchalka_grade", g); } catch (e2){}
+    }
+  } else { /* сменили игрока — следующий регистрируется и проходит опрос заново */
+    localGrade = null;
+    try { localStorage.removeItem("obuchalka_grade"); } catch (e2){}
+    try { localStorage.removeItem("obuchalka_age"); } catch (e2){}
+  }
   renderAuthUI();
   cloudSetSync(currentUser ? "wait" : "later");
-  if (!currentUser || !window.cloud) return;
+  if (!currentUser || !window.cloud){
+    if (window.cloud && cloud.available){
+      if (!$("sc-home").classList.contains("on")) go("sc-home");
+    } else if (!localGrade && !$("sc-survey").classList.contains("on")) go("sc-survey");
+    return;
+  }
   var stored = "";
   try { stored = localStorage.getItem("obuchalka_player") || ""; } catch (e2){}
   var same = !currentUser.login || stored === currentUser.login;
@@ -891,11 +1038,28 @@ document.addEventListener("cloud:user", function(e){
     cloudPushNow();
   }).catch(function(){ cloudSetSync("later"); }).finally(function(){
     renderMinutes();
-    if ($("sc-topics").classList.contains("on")) openTopics();
+    if (localGrade){
+      /* класс аккаунта мог отличаться от открытого — приводим к нему */
+      if ($("sc-topics").classList.contains("on")) openTopics();
+      else if ($("sc-home").classList.contains("on") || $("sc-survey").classList.contains("on")
+        || ($("sc-subject").classList.contains("on") && String(grade) !== localGrade)) openSubject(localGrade);
+    } else if (currentUser){
+      /* класс ещё не выбран — к опросу */
+      if (!$("sc-survey").classList.contains("on")) go("sc-survey");
+    }
   });
 });
 
+ddAge = dropdown("dd-age", AGE_ITEMS, "Выбери возраст");
+ddGrade = dropdown("dd-grade", GRADE_ITEMS, "Выбери класс");
+ddHeadGrade = dropdown("grade-select", GRADE_ITEMS, "Класс", changeGrade);
 $("hero-mascot").innerHTML = mascot("happy", 88);
+$("survey-mascot").innerHTML = mascot("happy", 88);
+try {
+  localGrade = localStorage.getItem("obuchalka_grade") || null;
+  if (localGrade !== "3" && localGrade !== "6") localGrade = null; /* уроки пока только 3 и 6 */
+} catch (e){ localGrade = null; }
+if (localGrade) openSubject(localGrade);
 renderMinutes();
 </script>
 
@@ -949,9 +1113,9 @@ var API_URL = "https://187-126-7-194.sslip.io"; /* сервер основате
   window.cloud = {
     available: true,
     user: null,
-    register: function(name, code, grade){
+    register: function(name, code){
       return new Promise(function(resolve, reject){
-        api("POST", "/api/register", { name: name, code: code, grade: grade }, function(st, data){
+        api("POST", "/api/register", { name: name, code: code }, function(st, data){
           if (st === 200 && data.token){ setToken(data.token); dispatch(data.user); resolve(); }
           else reject(new Error(apiMsg(st)));
         });
@@ -962,6 +1126,15 @@ var API_URL = "https://187-126-7-194.sslip.io"; /* сервер основате
         api("POST", "/api/login", { name: name, code: code }, function(st, data){
           if (st === 200 && data.token){ setToken(data.token); dispatch(data.user); resolve(); }
           else reject(new Error(apiMsg(st)));
+        });
+      });
+    },
+    /* мини-опрос: ребёнок выбрал класс — запоминаем в аккаунте */
+    setGrade: function(grade){
+      return new Promise(function(resolve, reject){
+        api("PUT", "/api/profile", { grade: grade }, function(st, data){
+          if (st === 200 && data.user) resolve(data.user);
+          else reject(new Error("profile " + st));
         });
       });
     },
@@ -998,6 +1171,9 @@ var API_URL = "https://187-126-7-194.sslip.io"; /* сервер основате
     });
   } else dispatch(null);
 })();
+
+/* сайт без API (API_URL пуст): без входа — сразу первый опрос */
+if (!(window.cloud && cloud.available) && !localGrade) go("sc-survey");
 </script>
 </body>
 </html>
