@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Минутка — математика</title>
 <meta name="theme-color" content="#FFC906">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Минутка">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='24' cy='60' rx='5' ry='3.5' fill='%23FF7A00'/%3E%3Cellipse cx='40' cy='60' rx='5' ry='3.5' fill='%23FF7A00'/%3E%3Ccircle cx='32' cy='33' r='23' fill='%23FFC906' stroke='%23FF7A00' stroke-width='4.5'/%3E%3Cpath d='M41 9 C35 2 28 3 31 10 C33 14 38 14 41 9 Z' fill='%23FF7A00'/%3E%3Cpath d='M41 9 C45 1 53 3 51 10 C50 14 44 14 41 9 Z' fill='%23FF7A00'/%3E%3Ccircle cx='41' cy='9.5' r='3' fill='%23E86A00'/%3E%3Cellipse cx='23' cy='26' rx='4' ry='4.8' fill='%23191919'/%3E%3Cellipse cx='41' cy='26' rx='4' ry='4.8' fill='%23191919'/%3E%3Cpath d='M32 34.5 L32 24 M32 34.5 L39.5 34.5' stroke='%23FF7A00' stroke-width='2.6' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='34.5' r='2' fill='%23FF7A00'/%3E%3Cpath d='M27 42.5 Q32 48 37 42.5' fill='none' stroke='%23191919' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
 :root{
@@ -1174,6 +1180,11 @@ var API_URL = "https://187-126-7-194.sslip.io"; /* сервер основате
 
 /* сайт без API (API_URL пуст): без входа — сразу первый опрос */
 if (!(window.cloud && cloud.available) && !localGrade) go("sc-survey");
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js"); });
+}
 </script>
 </body>
 </html>
