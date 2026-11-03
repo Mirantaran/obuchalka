@@ -35,31 +35,11 @@ body{
 }
 button{font-family:inherit;color:inherit}
 
-/* геометрические украшения: крупные и бледные, мягкий фон, фигуры по всему экрану */
-.sh{position:fixed;z-index:0;pointer-events:none;opacity:.2;animation:float 8s ease-in-out infinite}
-.sh--tri{top:40px;right:-110px;width:360px;height:315px;background:var(--yellow);
-  clip-path:polygon(50% 0,100% 100%,0 100%);--r:16deg}
-.sh--dia{top:40%;left:-90px;width:170px;height:170px;background:var(--orange);--r:45deg}
-.sh--sq{bottom:110px;right:-45px;width:120px;height:120px;background:var(--yellow);
-  --r:14deg;animation-duration:6s}
-.sh--zig{top:170px;left:-150px;width:300px;height:60px;--r:0deg;animation-duration:9s}
-.sh--ball{top:173px;left:128px;width:44px;height:44px;background:var(--yellow);
-  border-radius:50%;--r:0deg;animation-duration:9s}
-.sh--semi{bottom:24px;right:210px;width:150px;height:75px;background:var(--yellow);
-  border-radius:75px 75px 0 0;--r:-8deg;animation-duration:11s}
-.sh--plus{bottom:70px;right:170px;width:44px;height:44px;--r:0deg;animation-duration:12s;
-  background:linear-gradient(var(--orange),var(--orange)) center/100% 34% no-repeat,
-    linear-gradient(var(--orange),var(--orange)) center/34% 100% no-repeat}
-.sh--dot{bottom:150px;left:40px;width:60px;height:60px;background:var(--orange);
-  border-radius:50%;--r:0deg;animation-duration:7s}
-.sh--tri2{top:255px;left:38%;width:95px;height:84px;background:var(--orange);
-  clip-path:polygon(50% 0,100% 100%,0 100%);--r:-14deg;animation-duration:8s}
-.sh--ring2{top:46%;right:15%;width:80px;height:80px;border-radius:50%;
-  border:13px solid var(--orange);--r:0deg;animation-duration:10s}
-.sh--semi2{top:64%;left:30%;width:110px;height:55px;background:var(--orange);
-  border-radius:110px 110px 0 0;--r:9deg;animation-duration:11s}
+/* фон: мозаика крупных треугольников со щёлочками, плавает одним слоем */
+.bg-tri{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;
+  opacity:.22;animation:float 10s ease-in-out infinite;--r:0deg}
 @keyframes float{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(var(--r,0deg))}}
-@media (prefers-reduced-motion:reduce){.sh{animation:none}.confetti{display:none!important}}
+@media (prefers-reduced-motion:reduce){.bg-tri{animation:none}.confetti{display:none!important}}
 
 .app{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:30px 16px 40px}
 
@@ -122,7 +102,9 @@ button{font-family:inherit;color:inherit}
 .dd__opt{display:block;width:100%;text-align:left;font-size:17px;font-weight:800;padding:11px 14px;
   border-radius:12px;background:none;border:none;cursor:pointer;color:inherit;font-family:inherit}
 .dd__opt.sel{background:var(--yellow)}
-.dd--head .dd__btn{width:auto;font-size:14px;font-weight:900;padding:9px 12px;border-radius:12px;background:var(--paper)}
+.dd--head .dd__btn{width:auto;font-size:13px;font-weight:900;padding:8px 10px;border-radius:12px;
+  background:var(--paper);white-space:nowrap;gap:6px}
+.dd--head .dd__btn svg{width:14px;height:14px}
 .dd--head .dd__menu{left:auto;right:0;width:160px}
 
 /* счётчик минут */
@@ -153,11 +135,6 @@ button{font-family:inherit;color:inherit}
 /* урок: навигация, прогресс и задание */
 .task-nav{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
 .task-nav span{font-size:12px;font-weight:800;color:var(--gray)}
-.progress{height:20px;border-radius:999px;background:var(--paper);overflow:hidden;margin-top:8px}
-.progress i{display:block;height:100%;width:0;
-  background:repeating-linear-gradient(135deg,var(--orange) 0 12px,var(--yellow) 12px 24px);
-  transition:width .35s ease}
-
 .task{background:var(--paper);border-radius:20px;
   padding:22px;margin-top:14px}
 .task.shake{animation:shake .4s}
@@ -181,6 +158,20 @@ button{font-family:inherit;color:inherit}
 .choice.no{background:var(--red-bg)}
 .check{margin-top:16px}
 
+/* часы-минутки под заданием */
+.mclock{display:flex;align-items:center;gap:16px;background:var(--paper);border-radius:20px;
+  padding:14px 18px;margin-top:14px}
+.mclock__face{position:relative;flex:0 0 auto;line-height:0}
+.mclock__txt b{display:block;font-size:26px;font-weight:900;line-height:1}
+.mclock__txt span{font-size:14px;font-weight:800;color:var(--gray)}
+.plus1{position:absolute;top:-6px;right:-22px;background:var(--yellow);border-radius:999px;
+  padding:3px 10px;font-size:14px;font-weight:900;line-height:1.3;transform:rotate(-6deg);
+  animation:plus1 1.3s ease both;pointer-events:none;white-space:nowrap}
+@keyframes plus1{0%{opacity:0;transform:translateY(10px) rotate(-6deg)}
+  20%{opacity:1;transform:translateY(0) rotate(-6deg)}75%{opacity:1}
+  100%{opacity:0;transform:translateY(-10px) rotate(-6deg)}}
+.mclock__hand{transform-origin:50px 52px;transition:transform .45s cubic-bezier(.5,1.8,.5,1)}
+
 .feedback{display:none;margin-top:16px;border-radius:16px;padding:12px 14px;
   font-weight:800;align-items:center;gap:12px;font-size:16px;line-height:1.4}
 .feedback.show{display:flex}
@@ -190,29 +181,21 @@ button{font-family:inherit;color:inherit}
 
 /* результат */
 .result{text-align:center}
-.stars{display:flex;justify-content:center;gap:10px;margin:24px 0 6px}
-.star{width:52px;height:52px;animation:pop .5s ease both}
-.star:nth-child(2){animation-delay:.12s}
-.star:nth-child(3){animation-delay:.24s}
-.star:nth-child(4){animation-delay:.36s}
-.star:nth-child(5){animation-delay:.48s}
+.result__clock{margin:24px auto 6px;width:fit-content;line-height:0;animation:pop .5s ease both}
 @keyframes pop{from{transform:scale(0);opacity:0}70%{transform:scale(1.25)}to{transform:scale(1);opacity:1}}
-.score{font-size:38px;font-weight:900;margin:6px 0}
-.score small{display:block;font-size:14px;color:var(--gray);font-weight:700;margin-top:2px}
-.result-msg{font-size:17px;font-weight:800;margin:10px 0 6px}
-.score-sub{font-size:14px;color:var(--gray);font-weight:700;margin:0 0 22px}
-.earned{display:none;width:fit-content;margin:0 auto 18px;background:var(--yellow);
-  border-radius:999px;padding:6px 18px;font-size:15px;font-weight:900;transform:rotate(-2deg)}
-.earned.show{display:block}
+.score{font-size:38px;font-weight:900;margin:6px 0 22px}
+.score-sub{font-size:14px;color:var(--gray);font-weight:700;margin:-14px 0 22px}
+.score-sub:empty{display:none}
+.done-topic{font-size:14px;color:var(--gray);font-weight:800;margin:16px 0 0}
 
 /* вход / аккаунт */
 .headrow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.headctl{display:flex;align-items:center;gap:10px}
-.acct{background:var(--paper);border-radius:12px;font-weight:900;font-size:14px;
+.headctl{display:flex;align-items:center;gap:8px}
+.acct{background:var(--paper);border-radius:12px;font-weight:900;font-size:13px;
   padding:8px 13px;cursor:pointer;line-height:1.25;text-align:left;max-width:190px;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .acct:active{transform:translateY(2px)}
-.acct small{display:block;font-size:11px;color:var(--gray);font-weight:800}
+.acct small{display:block;font-size:10px;color:var(--gray);font-weight:800}
 
 .modal{position:fixed;inset:0;z-index:10;display:none;align-items:flex-end;justify-content:center;
   background:rgba(25,25,25,.55);padding:16px}
@@ -244,17 +227,6 @@ button{font-family:inherit;color:inherit}
 <body>
 <noscript>Для работы сайта нужен включённый JavaScript.</noscript>
 
-<div class="sh sh--tri" aria-hidden="true"></div>
-<div class="sh sh--dia" aria-hidden="true"></div>
-<div class="sh sh--sq" aria-hidden="true"></div>
-<div class="sh sh--semi" aria-hidden="true"></div>
-<div class="sh sh--plus" aria-hidden="true"></div>
-<div class="sh sh--dot" aria-hidden="true"></div>
-<div class="sh sh--tri2" aria-hidden="true"></div>
-<div class="sh sh--ring2" aria-hidden="true"></div>
-<div class="sh sh--semi2" aria-hidden="true"></div>
-<svg class="sh sh--zig" viewBox="0 0 120 24" aria-hidden="true"><path d="M2 12 L12 2 L22 12 L32 2 L42 12 L52 2 L62 12 L72 2 L82 12 L92 2 L102 12 L112 2 L120 10" fill="none" stroke="#ff7a00" stroke-width="6" stroke-linecap="round"/></svg>
-<div class="sh sh--ball" aria-hidden="true"></div>
 
 <div class="confetti" id="confetti" aria-hidden="true"></div>
 
@@ -276,7 +248,7 @@ button{font-family:inherit;color:inherit}
     <p class="section-title">Начнём</p>
     <button class="btn" id="btn-go-reg" onclick="openRegister()">Зарегистрироваться</button>
     <button class="btn btn--ghost" id="btn-go-login" onclick="showLoginForm()">Войти</button>
-    <p class="survey-hint">Зарегистрируйся один раз — и твои звёзды и минуты будут с тобой на любом устройстве.</p>
+    <p class="survey-hint">Зарегистрируйся один раз — и твои минуты будут с тобой на любом устройстве.</p>
   </section>
 
   <!-- Экран 2: первый опрос — возраст и класс -->
@@ -306,7 +278,6 @@ button{font-family:inherit;color:inherit}
     <p class="section-title">Минуты</p>
     <div class="wallet">
       <div class="wallet__row"><span>Накопилось</span><b id="min-total">0 минут</b></div>
-      <div class="wallet__row" id="sync-row" style="display:none"><span>Прогресс</span><b id="sync-state" style="font-size:14px"></b></div>
     </div>
     <p class="section-title">Выбери предмет</p>
     <div id="subj-list"></div>
@@ -328,7 +299,6 @@ button{font-family:inherit;color:inherit}
       <button class="back" onclick="openTopics()">← Вернуться</button>
       <span id="qlabel"></span>
     </div>
-    <div class="progress"><i id="bar"></i></div>
     <div class="task" id="task-card">
       <div class="q" id="q"></div>
       <p class="hint" id="hint" style="display:none"></p>
@@ -337,19 +307,22 @@ button{font-family:inherit;color:inherit}
       <button class="btn btn--o" id="btn-next" style="display:none" onclick="next()">Дальше →</button>
       <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
     </div>
+    <div class="mclock" id="mclock">
+      <div class="mclock__face" id="mclock-face"></div>
+      <div class="mclock__txt"><b id="mclock-min">0 минут</b><span>заработано в уроке</span></div>
+    </div>
   </section>
 
   <!-- Экран 5: результат -->
   <section class="screen" id="sc-result">
     <div class="result">
-      <div class="stars" id="stars"></div>
+      <div class="result__clock" id="res-clock"></div>
       <div class="score" id="score"></div>
-      <div class="result-msg" id="result-msg"></div>
       <div class="score-sub" id="score-sub"></div>
-      <div class="earned" id="earned-min"></div>
       <button class="btn btn--o" onclick="startLesson(li)">Пройти снова</button>
       <button class="btn btn--ghost" onclick="openTopics()">К списку тем</button>
       <button class="btn btn--ghost" onclick="openSubject(grade)">На главную</button>
+      <p class="done-topic" id="done-topic"></p>
     </div>
   </section>
 
@@ -358,7 +331,7 @@ button{font-family:inherit;color:inherit}
     <div class="modal__card">
       <div id="auth-form">
         <h3 id="auth-title">Новый аккаунт</h3>
-        <p class="modal__sub" id="auth-sub">Имя и секретный код — и звёзды с минутами будут с любого устройства</p>
+        <p class="modal__sub" id="auth-sub">Имя и секретный код — и твои минуты будут с любого устройства</p>
         <div class="field">
           <label for="f-name">Имя</label>
           <input id="f-name" type="text" maxlength="16" autocomplete="off" autocapitalize="off"
@@ -399,7 +372,7 @@ var LESSONS = {
       {
         title: "Изучи: Сложение и вычитание",
         desc: "Первая тема третьего класса: складываем и вычитаем числа до 100.",
-        meta: "10 заданий · 10 минут",
+        meta: "10 заданий · до 10 минут",
         im: "numeric",
         tasks: [
           { q: "Вычисли:\n36 + 7", a: ["43"] },
@@ -417,7 +390,7 @@ var LESSONS = {
       {
         title: "Повторение",
         desc: "Умножение и деление, задачи, периметр и единицы времени — главное из программы третьего класса.",
-        meta: "10 заданий · 10 минут",
+        meta: "10 заданий · до 10 минут",
         im: "numeric",
         tasks: [
           { q: "Вычисли:\n7 · 8", a: ["56"] },
@@ -440,7 +413,7 @@ var LESSONS = {
       {
         title: "Изучи: Делимость чисел",
         desc: "Первая тема шестого класса: делители, кратные и признаки делимости.",
-        meta: "10 заданий · 15 минут",
+        meta: "10 заданий · до 10 минут",
         im: "numeric",
         tasks: [
           { q: "Какое из чисел является делителем числа 12?", type: "choice", options: ["5", "6", "7", "8"], a: ["6"] },
@@ -458,7 +431,7 @@ var LESSONS = {
       {
         title: "Повторение",
         desc: "Дроби, отрицательные числа, проценты и пропорции — главное из программы шестого класса.",
-        meta: "10 заданий · 15 минут",
+        meta: "10 заданий · до 10 минут",
         im: "text",
         tasks: [
           { q: "Вычисли:\n−5 + 12", a: ["7"] },
@@ -479,6 +452,7 @@ var LESSONS = {
 
 var PRAISE = ["Верно! Отлично!", "Верно! Так держать!", "Верно! Ты растёшь!", "Верно! Круто!"];
 var grade = null, li = 0, idx = 0, score = 0, mistakes = 0, firstTry = true, answered = false, chosen = null;
+var runMarks = ""; /* по символу на решённое задание урока: y — с первой попытки (минута), g — не с первой */
 var localGrade = null; /* класс с опроса; уроки пока есть только для 3 и 6 */
 
 /* «ты сейчас в … классе» — предложный падеж */
@@ -647,9 +621,21 @@ function best(g, i){
     return v > 5 ? 0 : v; /* значения старого формата («X из 10») отбрасываем */
   } catch (e){ return 0; }
 }
-/* минуты: лучшая оценка урока × 2; баланс класса — сумма по всем его урокам */
+/* лучший результат урока в минутах (0…10); старую оценку 1…5 переводим ×2 (так баланс не меняется) */
+function bestMin(g, i){
+  try {
+    var v = localStorage.getItem("obuchalka_min_" + g + "_" + i);
+    if (v !== null){ v = +v; return (v >= 0 && v <= 10) ? v : 0; }
+    var old = best(g, i);
+    return old > 0 ? old * 2 : 0;
+  } catch (e){ return 0; }
+}
+function setBestMin(g, i, m){
+  try { localStorage.setItem("obuchalka_min_" + g + "_" + i, m); } catch (e){}
+}
+/* минуты: 1 задача с первой попытки = 1 минута; баланс класса — сумма лучших результатов уроков */
 function totalMinutes(g){
-  return LESSONS[g].lessons.reduce(function(s, _, i){ return s + best(g, i) * 2; }, 0);
+  return LESSONS[g].lessons.reduce(function(s, _, i){ return s + bestMin(g, i); }, 0);
 }
 function renderMinutes(){
   var m = totalMinutes("3") + totalMinutes("6");
@@ -662,12 +648,19 @@ function loadProg(g, i){
   try {
     var p = JSON.parse(localStorage.getItem(progKey(g, i)));
     if (p && typeof p.i === "number" && typeof p.s === "number" && typeof p.m === "number"
-        && p.i > 0 && p.i < LESSONS[g].lessons[i].tasks.length) return p;
+        && p.i > 0 && p.i < LESSONS[g].lessons[i].tasks.length){
+      if (typeof p.r !== "string" || !/^[yg]*$/.test(p.r) || p.r.length !== p.i){
+        /* старый формат без отметок: s верных с первой попытки, остальные — не с первой */
+        var s = Math.min(p.s, p.i);
+        p.r = new Array(s + 1).join("y") + new Array(p.i - s + 1).join("g");
+      }
+      return p;
+    }
   } catch (e){}
   return null;
 }
 function saveProg(i){
-  try { localStorage.setItem(progKey(grade, li), JSON.stringify({ i: i, s: score, m: mistakes })); } catch (e){}
+  try { localStorage.setItem(progKey(grade, li), JSON.stringify({ i: i, s: score, m: mistakes, r: runMarks })); } catch (e){}
   cloudPushSoon();
 }
 function clearProg(g, i){ try { localStorage.removeItem(progKey(g, i)); } catch (e){} }
@@ -675,13 +668,13 @@ function openTopics(){
   var G = LESSONS[grade];
   $("topics-top-title").textContent = "Математика · " + G.gradeName;
   $("topics-list").innerHTML = G.lessons.map(function(L, i){
-    var b = best(grade, i), p = loadProg(grade, i);
+    var b = bestMin(grade, i), p = loadProg(grade, i);
     return '<div class="card">'
       + '<div class="card__ribbon">Урок ' + (i + 1) + '</div>'
       + '<h3>' + esc(L.title) + '</h3>'
       + '<p>' + esc(L.desc) + '</p>'
       + '<div><span class="meta">' + esc(L.meta) + '</span>'
-      + (b > 0 ? '<span class="best">Лучший результат: ' + b + ' из 5</span>' : '')
+      + (b > 0 ? '<span class="best">Лучший результат: ' + b + ' из 10</span>' : '')
       + '</div>'
       + '<button class="btn" onclick="startLesson(' + i + ')">'
       + (p ? "Продолжить урок →" : "Начать урок →") + '</button>'
@@ -695,6 +688,7 @@ function startLesson(i){
   idx = p ? p.i : 0;
   score = p ? p.s : 0;
   mistakes = p ? p.m : 0;
+  runMarks = p ? p.r : "";
   go("sc-task");
   renderTask();
 }
@@ -702,8 +696,7 @@ function startLesson(i){
 function renderTask(){
   var L = LESSONS[grade].lessons[li], t = L.tasks[idx], n = L.tasks.length;
   answered = false; chosen = null; firstTry = true;
-  $("bar").style.width = (idx / n * 100) + "%";
-  $("qlabel").textContent = "Задание " + (idx + 1) + " из " + n;
+  $("qlabel").textContent = runMarks.length + " из " + n + " заданий";
   $("q").textContent = t.q;
   var hint = $("hint");
   if (t.hint){ hint.style.display = ""; hint.textContent = t.hint; } else { hint.style.display = "none"; }
@@ -726,6 +719,45 @@ function renderTask(){
       if (e.key === "Enter"){ e.preventDefault(); if (answered) next(); else check(); }
     });
   }
+  renderClock(false);
+}
+/* циферблат на 10 делений: доля жёлтая — минута заработана, серая — задача решена не с первой попытки */
+function clockSVG(size, marks, done){
+  var n = 10, cx = 50, cy = 52, r = 38, s = "";
+  s += '<svg viewBox="0 8 100 90" width="' + size + '" height="' + (size * 0.9) + '" aria-hidden="true">';
+  s += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r + 5) + '" fill="#ff7a00"/>';
+  s += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="#fff6dc"/>';
+  for (var i = 0; i < n; i++){
+    var m = marks.charAt(i);
+    if (!m) continue;
+    var a0 = (i / n) * 2 * Math.PI - Math.PI / 2, a1 = ((i + 1) / n) * 2 * Math.PI - Math.PI / 2;
+    var x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0), x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+    s += '<path d="M' + cx + " " + cy + " L" + x0.toFixed(2) + " " + y0.toFixed(2) + " A" + r + " " + r + " 0 0 1 "
+      + x1.toFixed(2) + " " + y1.toFixed(2) + ' Z" fill="' + (m === "y" ? "#ffc906" : "#d9d4cc") + '"/>';
+  }
+  for (var j = 0; j < n; j++){ /* риски-деления */
+    var a = (j / n) * 2 * Math.PI - Math.PI / 2;
+    s += '<line x1="' + (cx + (r - 7) * Math.cos(a)).toFixed(2) + '" y1="' + (cy + (r - 7) * Math.sin(a)).toFixed(2)
+      + '" x2="' + (cx + r * Math.cos(a)).toFixed(2) + '" y2="' + (cy + r * Math.sin(a)).toFixed(2) + '" stroke="#fff" stroke-width="2.4"/>';
+  }
+  s += '<g class="mclock__hand" style="transform:rotate(' + (done * 36) + 'deg)">'
+    + '<line x1="' + cx + '" y1="' + cy + '" x2="' + cx + '" y2="' + (cy - 30) + '" stroke="#191919" stroke-width="4" stroke-linecap="round"/></g>';
+  s += '<circle cx="' + cx + '" cy="' + cy + '" r="4.5" fill="#191919"/>';
+  return s + "</svg>";
+}
+function renderClock(plus){
+  var done = runMarks.length, got = (runMarks.match(/y/g) || []).length;
+  var face = $("mclock-face");
+  var hand = face.querySelector(".mclock__hand");
+  var from = hand ? hand.style.transform : null;
+  face.innerHTML = clockSVG(96, runMarks, done) + (plus ? '<span class="plus1">+1 мин</span>' : "");
+  if (from !== null){ /* анимируем шаг стрелки со старого положения */
+    var h = face.querySelector(".mclock__hand"), to = h.style.transform;
+    h.style.transition = "none"; h.style.transform = from;
+    void h.getBoundingClientRect();
+    h.style.transition = ""; h.style.transform = to;
+  }
+  $("mclock-min").textContent = got + " " + plural(got, "минута", "минуты", "минут");
 }
 function pick(btn){
   chosen = btn.dataset.v;
@@ -767,7 +799,9 @@ function check(){
     answered = true;
     if (firstTry) score++;
     var n = LESSONS[grade].lessons[li].tasks.length;
-    $("bar").style.width = ((idx + 1) / n * 100) + "%";
+    runMarks += firstTry ? "y" : "g";
+    $("qlabel").textContent = runMarks.length + " из " + n + " заданий";
+    renderClock(firstTry); /* «+1 мин» — только если минута заработана */
     if (t.type === "choice"){
       area.classList.add("lock");
       area.querySelectorAll(".choice").forEach(function(b){
@@ -811,36 +845,25 @@ function next(){
   if (idx + 1 >= n) finish();
   else { idx++; saveProg(idx); renderTask(); }
 }
-/* звёзды за урок: одна ошибка — всё равно пять, дальше − звезда за каждые две ошибки */
-function markFor(R){ return Math.max(1, 5 - Math.floor(R / 2)); }
+/* итоги урока: минуты = задачи с первой попытки; начисляем только улучшение лучшего результата */
 function finish(){
   clearProg(grade, li);
-  var L = LESSONS[grade].lessons[li], n = L.tasks.length;
-  var mark = markFor(mistakes), prevBest = best(grade, li);
-  if (mark > prevBest){ setBest(grade, li, mark); cloudPushNow(); }
-  /* минуты: только за улучшение лучшей оценки, повторный проход не фармит */
-  var addMin = Math.max(0, mark - prevBest) * 2, earned = $("earned-min");
-  if (addMin > 0){
-    earned.textContent = "+" + addMin + " " + plural(addMin, "минута", "минуты", "минут") + " к экранному времени";
-    earned.classList.add("show");
-  } else earned.classList.remove("show");
-  var stars = mark;
-  var msgs = {
-    1: "Не беда! Пройди урок ещё раз — получится.",
-    2: "Бывает! Стоит попрактиковаться — и получится.",
-    3: "Неплохо! Ещё немного тренировки.",
-    4: "Здорово! Почти идеально.",
-    5: "Вот это да! Ты знаток математики!"
-  };
-  $("stars").innerHTML = [0, 1, 2, 3, 4].map(function(i){
-    return '<svg class="star" viewBox="0 0 64 64"><path d="M32 4 L38.8 23.7 L59.6 24 L42.9 36.6 L49 56.5 L32 44.5 L15 56.5 L21.1 36.6 L4.4 24 L25.2 23.7 Z" fill="'
-      + (i < stars ? "#ffc906" : "#eae4da") + '"/></svg>';
-  }).join("");
-  $("score").innerHTML = mark + " из 5<small>" + esc(L.title) + "</small>";
-  $("result-msg").textContent = msgs[mark];
-  $("score-sub").textContent = "С первой попытки: " + score + " из " + n + " · неверных ответов: " + mistakes;
+  var L = LESSONS[grade].lessons[li];
+  var got = (runMarks.match(/y/g) || []).length, prev = bestMin(grade, li);
+  var add = Math.max(0, got - prev);
+  if (got > prev){ setBestMin(grade, li, got); cloudPushNow(); }
+  $("res-clock").innerHTML = clockSVG(150, runMarks, 0); /* стрелка на 12: круг пройден */
+  $("score").textContent = "+" + add + " " + plural(add, "минута", "минуты", "минут");
+  var sub = "";
+  if (prev > 0) sub = (add > 0 ? "" : "Побей свой рекорд! ") + "Лучший результат: " + Math.max(got, prev) + " из 10";
+  $("score-sub").textContent = sub;
+  $("done-topic").textContent = doneTopic(L);
   go("sc-result");
-  if (mark >= 4) confetti();
+  if (got >= 8) confetti();
+}
+function doneTopic(L){
+  if (/^Изучи:\s*/.test(L.title)) return "Изучил(а): " + L.title.replace(/^Изучи:\s*/, "");
+  return "Повторил(а): главное за " + grade + " класс";
 }
 function confetti(){
   var box = $("confetti"), colors = ["#ffc906", "#ff7a00", "#ffd23f"];
@@ -871,7 +894,7 @@ function renderAuthUI(){
     var btn = $("acct-btn");
     if (currentUser){
       btn.innerHTML = esc(currentUser.name) + "<small>"
-        + (localGrade ? localGrade + " класс · сменить" : "сменить") + "</small>";
+        + "сменить</small>";
     } else btn.textContent = "Войти";
   }
   $("hero-title").textContent = currentUser
@@ -892,7 +915,7 @@ function openAuth(){
   $("code-created").style.display = "none";
   if (currentUser){
     $("acct-name").textContent = currentUser.name;
-    $("acct-sub").textContent = (localGrade ? localGrade + " класс · " : "") + "звёзды и минуты сохраняются в облаке";
+    $("acct-sub").textContent = (localGrade ? localGrade + " класс · " : "") + "минуты сохраняются в облаке";
     $("auth-form").style.display = "none";
     $("acct-view").style.display = "";
     $("auth-modal").classList.add("show");
@@ -904,8 +927,8 @@ function setAuthMode(m){
   var reg = m === "reg";
   $("auth-title").textContent = reg ? "Новый аккаунт" : "Вход";
   $("auth-sub").textContent = reg
-    ? "Имя и секретный код — и звёзды с минутами будут с любого устройства"
-    : "Войди — и твои звёзды и минуты будут с тобой на любом устройстве";
+    ? "Имя и секретный код — и твои минуты будут с любого устройства"
+    : "Войди — и твои минуты будут с тобой на любом устройстве";
   $("auth-submit").textContent = reg ? "Зарегистрироваться" : "Войти";
   $("auth-toggle").textContent = reg ? "Уже есть аккаунт? Войти" : "Нет аккаунта? Создать";
   $("auth-err").classList.remove("show");
@@ -960,25 +983,25 @@ function forEachLesson(fn){
   ["3", "6"].forEach(function(g){ LESSONS[g].lessons.forEach(function(_, i){ fn(g, i); }); });
 }
 function collectState(){
-  var st = { best: {}, prog: {} };
+  var st = { best: {}, mins: {}, prog: {} };
   forEachLesson(function(g, i){
-    var b = best(g, i); if (b) st.best[g + "_" + i] = b;
+    var b = bestMin(g, i); if (b) st.mins[g + "_" + i] = b;
     var p = loadProg(g, i); if (p) st.prog[g + "_" + i] = p;
   });
   return st;
 }
 function clearLocalProgress(){
   forEachLesson(function(g, i){
-    try { localStorage.removeItem("obuchalka_best_" + g + "_" + i); } catch (e){}
+    try { localStorage.removeItem("obuchalka_best_" + g + "_" + i); localStorage.removeItem("obuchalka_min_" + g + "_" + i); } catch (e){}
     clearProg(g, i);
   });
 }
 function applyRemoteState(st){
-  var rBest = st.best || {}, rProg = st.prog || {};
+  var rBest = st.best || {}, rMins = st.mins || {}, rProg = st.prog || {};
   forEachLesson(function(g, i){
-    var rb = +rBest[g + "_" + i] || 0;
-    if (rb > best(g, i)) setBest(g, i, rb);
-    if (best(g, i) > 0){ clearProg(g, i); return; } /* пройденный урок — «незавершёнку» не воскрешаем */
+    var k = g + "_" + i, rm = Math.max(+rMins[k] || 0, (+rBest[k] || 0) * 2); /* старые клиенты шлют оценку 1-5 */
+    if (rm > bestMin(g, i)) setBestMin(g, i, rm);
+    if (bestMin(g, i) > 0){ clearProg(g, i); return; } /* пройденный урок — «незавершёнку» не воскрешаем */
     var lp = loadProg(g, i), rp = rProg[g + "_" + i];
     if (rp && (!lp || rp.i > lp.i || (rp.i === lp.i && rp.s > lp.s))){
       try { localStorage.setItem(progKey(g, i), JSON.stringify(rp)); } catch (e){}
@@ -987,21 +1010,15 @@ function applyRemoteState(st){
 }
 var cloudTimer = null, cloudDirty = false;
 function cloudSetSync(state){
-  var row = $("sync-row");
-  if (!row) return;
-  if (!currentUser){ row.style.display = "none"; return; }
-  row.style.display = "";
-  var v = $("sync-state");
-  if (state === "ok"){ v.textContent = "сохранён ✓"; v.style.color = "var(--green)"; cloudDirty = false; }
-  else if (state === "wait"){ v.textContent = "сохраняем…"; v.style.color = "var(--gray)"; }
-  else { v.textContent = "сохраним позже"; v.style.color = "var(--gray)"; cloudDirty = true; }
+  if (state === "ok") cloudDirty = false;
+  else if (state === "later") cloudDirty = true;
 }
 function cloudPushNow(){
   if (!(currentUser && window.cloud)) return;
   clearTimeout(cloudTimer);
   cloudDirty = false;
   cloud.push(collectState()).then(function(merged){
-    if (merged && merged.best){ applyRemoteState(merged); renderMinutes(); }
+    if (merged && (merged.mins || merged.best)){ applyRemoteState(merged); renderMinutes(); }
     cloudSetSync("ok");
   }).catch(function(){ cloudSetSync("later"); });
 }
@@ -1055,6 +1072,30 @@ document.addEventListener("cloud:user", function(e){
     }
   });
 });
+
+/* фон: мозаика крупных треугольников; соседи разделены щёлочкой GAP и не касаются */
+function drawBackground(){
+  var old = document.querySelector(".bg-tri"); if (old) old.remove();
+  var W = innerWidth, H = innerHeight, s = Math.max(W, H) * 0.34, h = s * 0.866, GAP = 7;
+  var cols = ["#ffc906", "#ff7a00"], seed = 7, out = "";
+  function rnd(){ seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+  for (var row = -1; row * h < H + h; row++){
+    for (var k = -2; k * s / 2 < W + s; k++){
+      if (rnd() < 0.45) continue; /* пропуски — для хаоса */
+      var up = ((k + row) % 2 + 2) % 2 === 0, x = k * s / 2, y = row * h, g = GAP;
+      var p = up ? [[x + s / 2, y + g * 1.7], [x + s - g, y + h - g / 2], [x + g, y + h - g / 2]]
+                 : [[x + g, y + g / 2], [x + s - g, y + g / 2], [x + s / 2, y + h - g * 1.7]];
+      var c = cols[rnd() < 0.5 ? 0 : 1];
+      rnd(); rnd(); /* как в макете: те же случайные числа — та же картинка */
+      out += '<polygon points="' + p.map(function(q){ return q[0].toFixed(1) + "," + q[1].toFixed(1); }).join(" ") + '" fill="' + c + '"/>';
+    }
+  }
+  document.body.insertAdjacentHTML("afterbegin",
+    '<svg class="bg-tri" aria-hidden="true" viewBox="0 0 ' + W + " " + H + '">' + out + "</svg>");
+}
+drawBackground();
+var bgTimer = null;
+window.addEventListener("resize", function(){ clearTimeout(bgTimer); bgTimer = setTimeout(drawBackground, 200); });
 
 ddAge = dropdown("dd-age", AGE_ITEMS, "Выбери возраст");
 ddGrade = dropdown("dd-grade", GRADE_ITEMS, "Выбери класс");
