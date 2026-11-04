@@ -365,44 +365,143 @@ button{font-family:inherit;color:inherit}
 <script>
 "use strict";
 
+/* id урока — постоянный ключ прогресса (класс_id). Не менять и не переиспользовать:
+   по нему хранятся минуты в localStorage и в облаке. Порядок уроков менять можно. */
 var LESSONS = {
   "3": {
     gradeName: "Третий класс",
     lessons: [
       {
-        title: "Изучи: Сложение и вычитание",
-        desc: "Первая тема третьего класса: складываем и вычитаем числа до 100.",
+        id: "mul1",
+        title: "Изучи: Что такое умножение",
+        desc: "Умножение — это сложение одинаковых слагаемых. Умножение на 1 и на 0.",
         meta: "10 заданий · до 10 минут",
         im: "numeric",
         tasks: [
-          { q: "Вычисли:\n36 + 7", a: ["43"] },
-          { q: "Вычисли:\n45 − 8", a: ["37"] },
-          { q: "Вычисли:\n28 + 26", a: ["54"] },
-          { q: "Вычисли:\n73 − 47", a: ["26"] },
-          { q: "Вычисли:\n52 + 19", a: ["71"] },
-          { q: "Число 64 увеличили на 15.\nКакое число получилось?", a: ["79"] },
-          { q: "Число 90 уменьшили на 24.\nКакое число получилось?", a: ["66"] },
-          { q: "В автобусе ехали 38 человек. На остановке вышли 15 человек, а вошли 9. Сколько человек стало в автобусе?", a: ["32"] },
-          { q: "На сколько 71 больше, чем 34?", a: ["37"] },
-          { q: "Сравни: 46 + 18 и 70", type: "choice", options: [">", "<", "="], a: ["<"] }
+          { q: "Замени сложение умножением:\n4 + 4 + 4 + 4 + 4", type: "choice", options: ["4 · 5", "5 · 5", "4 · 4", "4 + 5"], a: ["4 · 5"] },
+          { q: "Вычисли, заменив сложение умножением:\n3 + 3 + 3 + 3", a: ["12"] },
+          { q: "В 6 коробках по 2 карандаша.\nСколько всего карандашей?", a: ["12"] },
+          { q: "Вычисли:\n2 · 7", a: ["14"] },
+          { q: "Вычисли:\n9 · 1", a: ["9"] },
+          { q: "Вычисли:\n1 · 8", a: ["8"] },
+          { q: "Вычисли:\n6 · 0", a: ["0"] },
+          { q: "Вычисли:\n0 · 5", a: ["0"] },
+          { q: "3 · 4 = 12\nКак называется число 12?", type: "choice", options: ["множитель", "произведение", "сумма", "частное"], a: ["произведение"] },
+          { q: "У каждого из 3 котят по 4 лапы.\nСколько лап у всех котят?", a: ["12"] }
         ]
       },
       {
-        title: "Повторение",
-        desc: "Умножение и деление, задачи, периметр и единицы времени — главное из программы третьего класса.",
+        id: "mul2",
+        title: "Изучи: Умножение на 2",
+        desc: "Таблица умножения на 2. От перестановки множителей произведение не меняется.",
         meta: "10 заданий · до 10 минут",
         im: "numeric",
         tasks: [
+          { q: "Вычисли:\n2 · 3", a: ["6"] },
+          { q: "Вычисли:\n2 · 6", a: ["12"] },
+          { q: "Вычисли:\n2 · 8", a: ["16"] },
+          { q: "Вычисли:\n9 · 2", a: ["18"] },
+          { q: "Вычисли:\n7 · 2", a: ["14"] },
+          { q: "Вычисли:\n5 · 2", a: ["10"] },
+          { q: "Не вычисляя, найди пропущенное число:\n2 · 9 = 9 · ?", a: ["2"] },
+          { q: "Сравни: 2 · 6 и 6 · 2", type: "choice", options: [">", "<", "="], a: ["="] },
+          { q: "У велосипеда 2 колеса.\nСколько колёс у 7 велосипедов?", a: ["14"] },
+          { q: "В одной паре 2 носка.\nСколько носков в 9 парах?", a: ["18"] }
+        ]
+      },
+      {
+        id: "mul3",
+        title: "Изучи: Умножение на 3",
+        desc: "Таблица умножения на 3 и задачи «увеличь в 3 раза».",
+        meta: "10 заданий · до 10 минут",
+        im: "numeric",
+        tasks: [
+          { q: "Вычисли:\n3 · 4", a: ["12"] },
+          { q: "Вычисли:\n3 · 6", a: ["18"] },
+          { q: "Вычисли:\n3 · 7", a: ["21"] },
+          { q: "Вычисли:\n3 · 9", a: ["27"] },
+          { q: "Вычисли:\n8 · 3", a: ["24"] },
+          { q: "Вычисли:\n5 · 3", a: ["15"] },
+          { q: "Увеличь число 7 в 3 раза", a: ["21"] },
+          { q: "Сравни: 3 · 7 и 20", type: "choice", options: [">", "<", "="], a: [">"] },
+          { q: "У треугольника 3 стороны.\nСколько сторон у 6 треугольников?", a: ["18"] },
+          { q: "Тетрадь стоит 3 рубля.\nСколько стоят 9 таких тетрадей?", a: ["27"], hint: "Запиши только число" }
+        ]
+      },
+      {
+        id: "mul4",
+        title: "Изучи: Умножение на 4 и на 5",
+        desc: "Таблицы умножения на 4 и на 5.",
+        meta: "10 заданий · до 10 минут",
+        im: "numeric",
+        tasks: [
+          { q: "Вычисли:\n4 · 3", a: ["12"] },
+          { q: "Вычисли:\n4 · 6", a: ["24"] },
+          { q: "Вычисли:\n4 · 7", a: ["28"] },
+          { q: "Вычисли:\n4 · 9", a: ["36"] },
+          { q: "Вычисли:\n5 · 5", a: ["25"] },
+          { q: "Вычисли:\n5 · 7", a: ["35"] },
+          { q: "Вычисли:\n5 · 8", a: ["40"] },
+          { q: "Сравни: 4 · 5 и 5 · 4", type: "choice", options: [">", "<", "="], a: ["="] },
+          { q: "У стола 4 ножки.\nСколько ножек у 8 столов?", a: ["32"] },
+          { q: "В одном пакете 5 яблок.\nСколько яблок в 9 пакетах?", a: ["45"] }
+        ]
+      },
+      {
+        id: "mul6",
+        title: "Изучи: Умножение на 6 и на 7",
+        desc: "Таблицы умножения на 6 и на 7.",
+        meta: "10 заданий · до 10 минут",
+        im: "numeric",
+        tasks: [
+          { q: "Вычисли:\n6 · 6", a: ["36"] },
+          { q: "Вычисли:\n6 · 7", a: ["42"] },
+          { q: "Вычисли:\n6 · 8", a: ["48"] },
+          { q: "Вычисли:\n6 · 9", a: ["54"] },
+          { q: "Вычисли:\n7 · 7", a: ["49"] },
           { q: "Вычисли:\n7 · 8", a: ["56"] },
-          { q: "Вычисли:\n81 : 9", a: ["9"] },
-          { q: "Вычисли:\n45 + 38", a: ["83"] },
-          { q: "Вычисли:\n92 − 47", a: ["45"] },
-          { q: "Вычисли:\n6 · 7 − 20", a: ["22"] },
-          { q: "Тетрадь стоит 12 рублей.\nСколько стоят 5 таких тетрадей?", a: ["60"], hint: "Запиши только число" },
-          { q: "У Кати было 50 рублей. Она купила 3 открытки по 12 рублей. Сколько рублей у неё осталось?", a: ["14"], hint: "Запиши только число" },
-          { q: "Сторона квадрата равна 5 см.\nЧему равен периметр квадрата?", a: ["20"], hint: "Запиши число сантиметров" },
-          { q: "Сравни: 3 · 4 и 2 · 6", type: "choice", options: [">", "<", "="], a: ["="] },
-          { q: "Сколько минут\nв 1 часе 20 минутах?", a: ["80"] }
+          { q: "Вычисли:\n7 · 9", a: ["63"] },
+          { q: "Сравни: 6 · 8 и 7 · 7", type: "choice", options: [">", "<", "="], a: ["<"] },
+          { q: "В неделе 7 дней.\nСколько дней в 4 неделях?", a: ["28"] },
+          { q: "У жука 6 ног.\nСколько ног у 5 жуков?", a: ["30"] }
+        ]
+      },
+      {
+        id: "mul8",
+        title: "Изучи: Умножение на 8 и на 9",
+        desc: "Таблицы умножения на 8 и на 9 — самые трудные.",
+        meta: "10 заданий · до 10 минут",
+        im: "numeric",
+        tasks: [
+          { q: "Вычисли:\n8 · 4", a: ["32"] },
+          { q: "Вычисли:\n8 · 7", a: ["56"] },
+          { q: "Вычисли:\n8 · 8", a: ["64"] },
+          { q: "Вычисли:\n8 · 9", a: ["72"] },
+          { q: "Вычисли:\n9 · 6", a: ["54"] },
+          { q: "Вычисли:\n9 · 7", a: ["63"] },
+          { q: "Вычисли:\n9 · 9", a: ["81"] },
+          { q: "Какое произведение равно 72?", type: "choice", options: ["8 · 8", "8 · 9", "7 · 9", "9 · 9"], a: ["8 · 9"] },
+          { q: "У паука 8 ног.\nСколько ног у 6 пауков?", a: ["48"] },
+          { q: "Вычисли:\n9 · 4 + 9", a: ["45"] }
+        ]
+      },
+      {
+        id: "div1",
+        title: "Изучи: Деление по таблице",
+        desc: "Деление — действие, обратное умножению. Делим с помощью таблицы умножения.",
+        meta: "10 заданий · до 10 минут",
+        im: "numeric",
+        tasks: [
+          { q: "12 конфет разложили поровну\nна 3 тарелки. Сколько конфет на каждой?", a: ["4"] },
+          { q: "Вычисли:\n18 : 2", a: ["9"] },
+          { q: "Вычисли:\n24 : 6", a: ["4"] },
+          { q: "Вычисли:\n35 : 5", a: ["7"] },
+          { q: "Вычисли:\n42 : 7", a: ["6"] },
+          { q: "Вычисли:\n56 : 8", a: ["7"] },
+          { q: "Вычисли:\n63 : 9", a: ["7"] },
+          { q: "Известно: 6 · 8 = 48.\nВычисли 48 : 6", a: ["8"] },
+          { q: "Какое действие обратно умножению?", type: "choice", options: ["сложение", "вычитание", "деление"], a: ["деление"] },
+          { q: "28 учеников разбились на группы по 4.\nСколько получилось групп?", a: ["7"] }
         ]
       }
     ]
@@ -411,6 +510,7 @@ var LESSONS = {
     gradeName: "Шестой класс",
     lessons: [
       {
+        id: "0", /* ключ прогресса 6_0 — старый, сохраняем */
         title: "Изучи: Делимость чисел",
         desc: "Первая тема шестого класса: делители, кратные и признаки делимости.",
         meta: "10 заданий · до 10 минут",
@@ -426,24 +526,6 @@ var LESSONS = {
           { q: "Чему равен НОД чисел 12 и 18?\n(наибольший общий делитель)", a: ["6"] },
           { q: "Чему равен НОК чисел 4 и 6?\n(наименьшее общее кратное)", a: ["12"] },
           { q: "Какое число является делителем любого натурального числа?", type: "choice", options: ["0", "1", "2", "10"], a: ["1"] }
-        ]
-      },
-      {
-        title: "Повторение",
-        desc: "Дроби, отрицательные числа, проценты и пропорции — главное из программы шестого класса.",
-        meta: "10 заданий · до 10 минут",
-        im: "text",
-        tasks: [
-          { q: "Вычисли:\n−5 + 12", a: ["7"] },
-          { q: "Вычисли:\n−8 − 6", a: ["-14"] },
-          { q: "Вычисли:\n−4 · (−6)", a: ["24"] },
-          { q: "Выполни сложение:\n2/5 + 1/5", a: ["3/5"], hint: "Запиши дробь, например: 3/5" },
-          { q: "Сократи дробь:\n18/24", a: ["3/4"], hint: "Запиши дробь, например: 3/4" },
-          { q: "Вычисли:\n0,7 + 0,15", a: ["0.85"] },
-          { q: "Найди 15 % от 200", a: ["30"] },
-          { q: "Найди x из пропорции:\nx : 8 = 3 : 4", a: ["6"] },
-          { q: "Запиши число, противоположное числу 7", a: ["-7"] },
-          { q: "Кофта стоила 250 рублей, а потом подорожала на 20 %. Сколько рублей она стоит теперь?", a: ["300"] }
         ]
       }
     ]
@@ -607,7 +689,7 @@ function openSubject(g){
   $("subj-top-title").textContent = "Ты сейчас сидишь " + GRADE_PREP[g] + " классе";
   $("subj-list").innerHTML =
     '<button class="subject" onclick="openTopics()">' + MATH_ICON
-    + '<span><b>Математика</b><small>темы и повторение</small></span><span class="subject__arrow">→</span></button>'
+    + '<span><b>Математика</b><small>уроки по темам</small></span><span class="subject__arrow">→</span></button>'
     + '<button class="subject subject--soon" disabled><span class="subject__icon subject__icon--soft">?</span>'
     + '<span><b>Логика<span class="soon">скоро</span></b><small>в разработке</small></span><span class="subject__arrow">→</span></button>';
   syncGradeSelect();
@@ -615,23 +697,25 @@ function openSubject(g){
   go("sc-subject");
 }
 
+/* постоянный ключ урока «класс_id» — по нему хранится прогресс (см. комментарий у LESSONS) */
+function lessonKey(g, i){ return g + "_" + LESSONS[g].lessons[i].id; }
 function best(g, i){
   try {
-    var v = +localStorage.getItem("obuchalka_best_" + g + "_" + i) || 0;
+    var v = +localStorage.getItem("obuchalka_best_" + lessonKey(g, i)) || 0;
     return v > 5 ? 0 : v; /* значения старого формата («X из 10») отбрасываем */
   } catch (e){ return 0; }
 }
 /* лучший результат урока в минутах (0…10); старую оценку 1…5 переводим ×2 (так баланс не меняется) */
 function bestMin(g, i){
   try {
-    var v = localStorage.getItem("obuchalka_min_" + g + "_" + i);
+    var v = localStorage.getItem("obuchalka_min_" + lessonKey(g, i));
     if (v !== null){ v = +v; return (v >= 0 && v <= 10) ? v : 0; }
     var old = best(g, i);
     return old > 0 ? old * 2 : 0;
   } catch (e){ return 0; }
 }
 function setBestMin(g, i, m){
-  try { localStorage.setItem("obuchalka_min_" + g + "_" + i, m); } catch (e){}
+  try { localStorage.setItem("obuchalka_min_" + lessonKey(g, i), m); } catch (e){}
 }
 /* минуты: 1 задача с первой попытки = 1 минута; баланс класса — сумма лучших результатов уроков */
 function totalMinutes(g){
@@ -643,7 +727,7 @@ function renderMinutes(){
   if (cloudDirty && currentUser && window.cloud) cloudPushNow(); /* дотолкнуть несохранённое */
 }
 /* незавершённый урок: где остановились и сколько уже верно */
-function progKey(g, i){ return "obuchalka_prog_" + g + "_" + i; }
+function progKey(g, i){ return "obuchalka_prog_" + lessonKey(g, i); }
 function loadProg(g, i){
   try {
     var p = JSON.parse(localStorage.getItem(progKey(g, i)));
@@ -663,21 +747,30 @@ function saveProg(i){
   try { localStorage.setItem(progKey(grade, li), JSON.stringify({ i: i, s: score, m: mistakes, r: runMarks })); } catch (e){}
   cloudPushSoon();
 }
+/* урок пройден, если его хоть раз довели до итогов (даже с 0 минут: тогда хранится «0») */
+function lessonDone(g, i){
+  if (bestMin(g, i) > 0) return true;
+  try { return localStorage.getItem("obuchalka_min_" + lessonKey(g, i)) !== null; } catch (e){ return false; }
+}
 function clearProg(g, i){ try { localStorage.removeItem(progKey(g, i)); } catch (e){} }
 function openTopics(){
   var G = LESSONS[grade];
   $("topics-top-title").textContent = "Математика · " + G.gradeName;
-  $("topics-list").innerHTML = G.lessons.map(function(L, i){
-    var b = bestMin(grade, i), p = loadProg(grade, i);
-    return '<div class="card">'
-      + '<div class="card__ribbon">Урок ' + (i + 1) + '</div>'
+  /* непройденные уроки — сверху по порядку программы, пройденные (доведённые до итогов) — вниз */
+  var order = G.lessons.map(function(_, i){ return i; });
+  order = order.filter(function(i){ return !lessonDone(grade, i); })
+    .concat(order.filter(function(i){ return lessonDone(grade, i); }));
+  $("topics-list").innerHTML = order.map(function(i){
+    var L = G.lessons[i], b = bestMin(grade, i), p = loadProg(grade, i), done = lessonDone(grade, i);
+    return '<div class="card' + (done ? ' card--done' : '') + '">'
+      + '<div class="card__ribbon">' + 'Урок ' + (i + 1) + (done ? ' · Пройден' : '') + '</div>'
       + '<h3>' + esc(L.title) + '</h3>'
       + '<p>' + esc(L.desc) + '</p>'
       + '<div><span class="meta">' + esc(L.meta) + '</span>'
       + (b > 0 ? '<span class="best">Лучший результат: ' + b + ' из 10</span>' : '')
       + '</div>'
       + '<button class="btn" onclick="startLesson(' + i + ')">'
-      + (p ? "Продолжить урок →" : "Начать урок →") + '</button>'
+      + (p ? "Продолжить урок →" : done ? "Пройти снова →" : "Начать урок →") + '</button>'
       + '</div>';
   }).join("");
   go("sc-topics");
@@ -851,7 +944,8 @@ function finish(){
   var L = LESSONS[grade].lessons[li];
   var got = (runMarks.match(/y/g) || []).length, prev = bestMin(grade, li);
   var add = Math.max(0, got - prev);
-  if (got > prev){ setBestMin(grade, li, got); cloudPushNow(); }
+  var wasDone = lessonDone(grade, li);
+  if (got > prev || !wasDone){ setBestMin(grade, li, Math.max(got, prev)); cloudPushNow(); } /* 0 минут тоже сохраняем: урок пройден */
   $("res-clock").innerHTML = clockSVG(150, runMarks, 0); /* стрелка на 12: круг пройден */
   $("score").textContent = "+" + add + " " + plural(add, "минута", "минуты", "минут");
   var sub = "";
@@ -977,7 +1071,7 @@ function switchPlayer(){
 
 /* синхронизация: облако ↔ localStorage */
 function setBest(g, i, mark){
-  try { localStorage.setItem("obuchalka_best_" + g + "_" + i, mark); } catch (e){}
+  try { localStorage.setItem("obuchalka_best_" + lessonKey(g, i), mark); } catch (e){}
 }
 function forEachLesson(fn){
   ["3", "6"].forEach(function(g){ LESSONS[g].lessons.forEach(function(_, i){ fn(g, i); }); });
@@ -985,24 +1079,24 @@ function forEachLesson(fn){
 function collectState(){
   var st = { best: {}, mins: {}, prog: {} };
   forEachLesson(function(g, i){
-    var b = bestMin(g, i); if (b) st.mins[g + "_" + i] = b;
-    var p = loadProg(g, i); if (p) st.prog[g + "_" + i] = p;
+    if (lessonDone(g, i)) st.mins[lessonKey(g, i)] = bestMin(g, i);
+    var p = loadProg(g, i); if (p) st.prog[lessonKey(g, i)] = p;
   });
   return st;
 }
 function clearLocalProgress(){
   forEachLesson(function(g, i){
-    try { localStorage.removeItem("obuchalka_best_" + g + "_" + i); localStorage.removeItem("obuchalka_min_" + g + "_" + i); } catch (e){}
+    try { localStorage.removeItem("obuchalka_best_" + lessonKey(g, i)); localStorage.removeItem("obuchalka_min_" + lessonKey(g, i)); } catch (e){}
     clearProg(g, i);
   });
 }
 function applyRemoteState(st){
   var rBest = st.best || {}, rMins = st.mins || {}, rProg = st.prog || {};
   forEachLesson(function(g, i){
-    var k = g + "_" + i, rm = Math.max(+rMins[k] || 0, (+rBest[k] || 0) * 2); /* старые клиенты шлют оценку 1-5 */
-    if (rm > bestMin(g, i)) setBestMin(g, i, rm);
-    if (bestMin(g, i) > 0){ clearProg(g, i); return; } /* пройденный урок — «незавершёнку» не воскрешаем */
-    var lp = loadProg(g, i), rp = rProg[g + "_" + i];
+    var k = lessonKey(g, i), rm = Math.max(+rMins[k] || 0, (+rBest[k] || 0) * 2); /* старые клиенты шлют оценку 1-5 */
+    if (rm > bestMin(g, i) || (k in rMins && !lessonDone(g, i))) setBestMin(g, i, Math.max(rm, bestMin(g, i)));
+    if (lessonDone(g, i)){ clearProg(g, i); return; } /* пройденный урок — «незавершёнку» не воскрешаем */
+    var lp = loadProg(g, i), rp = rProg[k];
     if (rp && (!lp || rp.i > lp.i || (rp.i === lp.i && rp.s > lp.s))){
       try { localStorage.setItem(progKey(g, i), JSON.stringify(rp)); } catch (e){}
     }
